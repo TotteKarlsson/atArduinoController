@@ -1,10 +1,7 @@
 #pragma hdrstop
 #include "MainForm.h"
 #include "mtkLogger.h"
-#include "TSplashForm.h"
 using namespace mtk;
-
-extern TSplashForm*  gSplashForm;
 
 //---------------------------------------------------------------------------
 void __fastcall TMain::ShutDownTimerTimer(TObject *Sender)
@@ -46,8 +43,7 @@ void __fastcall TMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 
 	//Check if active stuff is going on.. if so call the ShutDown in the
     //Timer fire    if(
-   	CanClose = (gSplashForm && gSplashForm->isOnShowTime()
-    			|| mFrames.size()
+   	CanClose = (mFrames.size()
             	|| mArduinoServer.isRunning()
                 ) ? false : true;
 

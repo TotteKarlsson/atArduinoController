@@ -31,7 +31,6 @@
 #include "TIntLabel.h"
 #include "TPropertyCheckBox.h"
 #include "TArrayBotBtn.h"
-#include "arduino/atPufferArduino.h"
 #include "arduino/atLightsArduino.h"
 #include "arduino/atSensorsArduino.h"
 using Poco::Timestamp;
@@ -75,27 +74,11 @@ class TMain : public TRegistryForm
 	TPageControl *PageControl1;
 	TTabSheet *TabSheet1;
 	TTabSheet *TabSheet2;
-	TGroupBox *GroupBox2;
-	TIntLabel *mSectionCountLbl;
-	TGroupBox *GroupBox3;
-	TIntegerLabeledEdit *mDesiredRibbonLengthE;
-	TPropertyCheckBox *mAutoPuffCB;
 	TPanel *TopPanel;
-	TGroupBox *GroupBox6;
 	TArrayBotButton *Button1;
 	TArrayBotButton *Button5;
-	TArrayBotButton *mPuffNowBtn;
-	TArrayBotButton *mEnablePuffBtn;
-	TArrayBotButton *mResetCounterBtn;
 	TArrayBotButton *mFrontBackLEDBtn;
 	TArrayBotButton *mCoaxLightBtn;
-	TPropertyCheckBox *mAutoZeroCutCB;
-	TGroupBox *GroupBox7;
-	TArrayBotButton *mSetZeroCutBtn;
-	TArrayBotButton *mSetPresetCutBtn;
-	TComboBox *mLeicaCutThicknessLB;
-	TLabel *Label1;
-	TArrayBotButton *mStartNewRibbonButton;
 	TGroupBox *GroupBox1;
 	TIntegerLabeledEdit *mArduinoServerPortE;
 	TButton *mArduinoServerStartBtn;
@@ -114,17 +97,7 @@ class TMain : public TRegistryForm
 	void __fastcall mClearLogMemoBtnClick(TObject *Sender);
 	void __fastcall UIUpdateTimerTimer(TObject *Sender);
 	void __fastcall mArduinoServerStartBtnClick(TObject *Sender);
-	void __fastcall mResetCounterBtnClick(TObject *Sender);
-	void __fastcall mPuffRelatedBtnClick(TObject *Sender);
 	void __fastcall LigthsBtnsClick(TObject *Sender);
-	void __fastcall mAutoPuffCBClick(TObject *Sender);
-	void __fastcall mDesiredRibbonLengthEKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-	void __fastcall mSetZeroCutBtnClick(TObject *Sender);
-	void __fastcall mSetPresetCutBtnClick(TObject *Sender);
-	void __fastcall mAutoZeroCutCBClick(TObject *Sender);
-	void __fastcall mStartNewRibbonButtonClick(TObject *Sender);
-
 
     private:
         LogFileReader                       mLogFileReader;

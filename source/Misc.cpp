@@ -2,14 +2,11 @@
 #include "MainForm.h"
 #include "mtkLogger.h"
 #include "mtkVCLUtils.h"
-#include "apt/atAPTMotor.h"
-#include "TSplashForm.h"
 #include "TAboutArduinoControllerForm.h"
 #include "mtkLogger.h"
 using namespace mtk;
 
 static HWND gOtherAppWindow = NULL;
-extern TSplashForm*  gSplashForm;
 
 void __fastcall	TMain::OnException()
 {
@@ -36,11 +33,6 @@ void __fastcall TMain::AppInBox(mlxStructMessage &msg)
 
         switch(aMsg)
         {
-            case abSplashWasClosed:
-                Log(lDebug2) << "Splash form sent message that it was closed";
-                gSplashForm = NULL;
-            break;
-
             default:
             break ;
         }

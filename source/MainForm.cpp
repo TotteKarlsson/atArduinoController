@@ -9,8 +9,6 @@
 #include <bitset>
 #include "mtkMathUtils.h"
 #include "atExceptions.h"
-#include "TSplashForm.h"
-#include "TPufferArduinoBoardFrame.h"
 #include "TLightsArduinoFrame.h"
 #include "TSensorsArduinoFrame.h"
 //---------------------------------------------------------------------------
@@ -28,7 +26,6 @@ TMain *Main;
 extern string           gLogFileLocation;
 extern string           gLogFileName;
 extern string           gAppDataFolder;
-extern TSplashForm*  	gSplashForm;
 extern string 			gApplicationRegistryRoot;
 extern bool             gAppIsStartingUp;
 using namespace mtk;
@@ -53,11 +50,9 @@ __fastcall TMain::TMain(TComponent* Owner)
 	mProperties.setIniFile(&mIniFile);
 	mProperties.add((BaseProperty*)  &mLogLevel.setup( 	                    		"LOG_LEVEL",    	 lAny));
 	mProperties.add((BaseProperty*)  &mArduinoServerPortE->getProperty()->setup(	"SERVER_PORT",    	 50000));
-	mProperties.add((BaseProperty*)  &mDesiredRibbonLengthE->getProperty()->setup(	"DESIRED_RIBBON_LENGTH",    	 25));
 
     mProperties.read();
 	mArduinoServerPortE->update();
-    mDesiredRibbonLengthE->update();
 
     //This will update the UI from a thread
     mArduinoServer.assignOnUpdateCallBack(onUpdatesFromArduinoServer);
@@ -76,31 +71,14 @@ void __fastcall TMain::FormCreate(TObject *Sender)
 	gAppIsStartingUp = false;
 
 	TMemoLogger::mMemoIsEnabled = true;
-	gSplashForm->mMainAppIsRunning = true;
 
 	this->Visible = true;
-	while(gSplashForm->isOnShowTime() == true)
-	{
-       	Application->ProcessMessages();
-
-		//In order to show whats going on on the splash screen
-		if(gSplashForm->Visible == false)
-		{
-			break;
-		}
-	}
-
-	gSplashForm->Close();
 	gLogger.setLogLevel(mLogLevel);
 
 	LogLevelCB->ItemIndex = mLogLevel.getValue() - 2;
 
 	TMemoLogger::mMemoIsEnabled = true;
     UIUpdateTimer->Enabled = true;
-
-	stringstream msg;
-	msg << "SET_DESIRED_RIBBON_LENGTH=" << mDesiredRibbonLengthE->getValue();
-	mArduinoServer.request(msg.str());
 
     //Setup the server
     mArduinoServer.start(mArduinoServerPortE->getValue());
@@ -114,12 +92,6 @@ void __fastcall	TMain::setupUIFrames()
 {
     mPufferArduino.setName("PUFFER_ARDUINO");
 
-    //Create ArduinoFrames
-    TPufferArduinoBoardFrame* af1 = new TPufferArduinoBoardFrame(mArduinoServer, mPufferArduino, mIniFile, this);
-    af1->Parent =  mArduinoSB;
-    af1->Align = alLeft;
-    af1->ConnectBtnClick(NULL);
-    mFrames.push_back(af1);
 
     mLightsArduino.setName("LIGHTS_ARDUINO");
     TLightsArduinoFrame* af2 = new TLightsArduinoFrame(mArduinoServer, mLightsArduino, mIniFile, this);
@@ -147,35 +119,6 @@ void TMain::onUpdatesFromArduinoServer(const string& new_msg)
         {
             //Parse the message
         	StringList l(msg, '=');
-            if(startsWith("SECTION_COUNT", msg))
-            {
-                if(l.size() == 2)
-                {
-					Main->mSectionCountLbl->setValue(toInt(l[1]));
-                }
-            }
-            else if(startsWith("AUTO_PUFF=", msg))
-            {
-                if(l.size() == 2)
-                {
-                    Main->mAutoPuffCB->Checked = (toBool(l[1])) ? true : false;
-                }
-            }
-            else if(startsWith("AUTO_ZERO_CUT=", msg))
-            {
-                if(l.size() == 2)
-                {
-                    Main->mAutoZeroCutCB->Checked = (toBool(l[1])) ? true : false;
-                }
-            }
-
-            else if(startsWith("DESIRED_RIBBON_LENGTH", msg))
-            {
-                if(l.size() == 2)
-                {
-                    Main->mDesiredRibbonLengthE->setValue(toInt(l[1]));
-                }
-            }
         }
     };
 
@@ -204,26 +147,6 @@ void __fastcall TMain::mArduinoServerStartBtnClick(TObject *Sender)
     else
     {
     	mArduinoServer.start(mArduinoServerPortE->getValue());
-    }
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMain::mResetCounterBtnClick(TObject *Sender)
-{
-	mArduinoServer.request("RESET_SECTION_COUNT");
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMain::mPuffRelatedBtnClick(TObject *Sender)
-{
-	TArrayBotButton* b = dynamic_cast<TArrayBotButton*>(Sender);
-    if(b == mPuffNowBtn)
-    {
-		mArduinoServer.request("PUFF");
-    }
-    else if(b == mEnablePuffBtn)
-    {
-		mArduinoServer.request("ENABLE_PUFFER");
     }
 }
 
@@ -264,75 +187,4 @@ void __fastcall TMain::LigthsBtnsClick(TObject *Sender)
         }
     }
 }
-
-//---------------------------------------------------------------------------
-void __fastcall TMain::mAutoPuffCBClick(TObject *Sender)
-{
-	if(mAutoPuffCB->Checked)
-    {
-		mArduinoServer.enableAutoPuff();
-    }
-    else
-    {
-		mArduinoServer.disableAutoPuff();
-    }
-}
-
-void __fastcall TMain::mAutoZeroCutCBClick(TObject *Sender)
-{
-	if(mAutoZeroCutCB->Checked)
-    {
-		mArduinoServer.enableAutoZeroCut();
-    }
-    else
-    {
-		mArduinoServer.disableAutoZeroCut();
-    }
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMain::mDesiredRibbonLengthEKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift)
-{
-    if(Key == vkReturn)
-    {
-    	stringstream smsg;
-        smsg << "SET_DESIRED_RIBBON_LENGTH=" << mDesiredRibbonLengthE->getValue();
-        mArduinoServer.request(smsg.str());
-    }
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMain::mSetZeroCutBtnClick(TObject *Sender)
-{
-	mArduinoServer.request("SET_CUT_THICKNESS_PRESET=1");
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMain::mSetPresetCutBtnClick(TObject *Sender)
-{
-	//Check the listbox for current preset
-    String txt  = mLeicaCutThicknessLB->Text;
-    int indx = mLeicaCutThicknessLB->Items->IndexOf(txt);
-    if(indx != -1)
-    {
-        stringstream msg;
-        msg <<"SET_CUT_THICKNESS_PRESET="<<indx + 1;
-        mArduinoServer.request(msg.str());
-    }
-    else
-    {
-    	Log(lError) <<"Error setting cut preset!";
-    }
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMain::mStartNewRibbonButtonClick(TObject *Sender)
-{
-	//Tell Arduino server to start new Ribbon
-    stringstream msg;
-    msg <<"START_NEW_RIBBON";
-    mArduinoServer.request(msg.str());
-}
-
 

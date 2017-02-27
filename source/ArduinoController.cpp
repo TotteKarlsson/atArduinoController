@@ -12,10 +12,8 @@
 
 //---------------------------------------------------------------------------
 USEFORM("MainForm.cpp", Main);
-USEFORM("frames\TLightsArduinoFrame.cpp", LightsArduinoFrame); /* TFrame: File Type */
-USEFORM("frames\TPufferArduinoBoardFrame.cpp", PufferArduinoBoardFrame); /* TFrame: File Type */
 USEFORM("forms\TAboutArduinoControllerForm.cpp", AboutArduinoControllerForm);
-USEFORM("forms\TArduinoControllerSplashForm.cpp", ArduinoControllerSplashForm);
+USEFORM("frames\TLightsArduinoFrame.cpp", LightsArduinoFrame); /* TFrame: File Type */
 USEFORM("frames\TArduinoBoardFrame.cpp", ArduinoBoardFrame); /* TFrame: File Type */
 USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
 //---------------------------------------------------------------------------
@@ -36,8 +34,6 @@ extern string       gTimeFormat                 = "%H:%M:%S";
 extern string       gCommonAppDataLocation      = "";
 extern bool         gIsDevelopmentRelease       = false;
 extern bool         gAppIsStartingUp            = true;
-extern bool         gHideSplash                 = true;
-extern TArduinoControllerSplashForm* gSplashForm                 = NULL;
 
 void setupLogging();
 
@@ -85,18 +81,6 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
 
-        gSplashForm = new TArduinoControllerSplashForm(Application);
-        if(!gHideSplash)
-        {
-            Application->ShowMainForm = false;
-            gSplashForm->Show();
-            gSplashForm->Update();
-        }
-        else
-        {
-            gSplashForm->Close();
-        }
-
 		TStyleManager::TrySetStyle("Amakrits");
 		Application->Title = "arduino_controller";
 		Application->CreateForm(__classid(TMain), &Main);
@@ -125,18 +109,12 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 }
 
 //---------------------------------------------------------------------------
-#if defined DSL_STATIC
-	#pragma comment(lib, "mtkCommon-static.lib")
-	#pragma comment(lib, "mtkMath-static.lib")
-	#pragma comment(lib, "mtkIPC-static.lib")
-#else
-	#pragma comment(lib, "mtkCommon.lib")
-	#pragma comment(lib, "mtkMath.lib")
-	#pragma comment(lib, "mtkIPC.lib")
-#endif
+#pragma comment(lib, "mtkCommon.lib")
+#pragma comment(lib, "mtkMath.lib")
+#pragma comment(lib, "mtkIPC.lib")
 
 #pragma comment(lib, "atCore.lib")
 #pragma comment(lib, "poco_foundation-static.lib")
 #pragma comment(lib, "tinyxml2-static.lib")
 #pragma comment(lib, "VCLCommon.bpi")
-#pragma comment(lib, "DuneForms.lib")
+#pragma comment(lib, "DuneForms.bpi")

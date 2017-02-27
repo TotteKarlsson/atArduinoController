@@ -24,7 +24,7 @@
         <Projects Include="P:\libs\atapi\source\vcl\atVCLCore.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="ArduinoController.cbproj">
+        <Projects Include="source\ArduinoController.cbproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -99,13 +99,13 @@
         <MSBuild Projects="P:\libs\atapi\source\vcl\atVCLCore.cbproj" Targets="Make"/>
     </Target>
     <Target Name="ArduinoController">
-        <MSBuild Projects="ArduinoController.cbproj"/>
+        <MSBuild Projects="source\ArduinoController.cbproj"/>
     </Target>
     <Target Name="ArduinoController:Clean">
-        <MSBuild Projects="ArduinoController.cbproj" Targets="Clean"/>
+        <MSBuild Projects="source\ArduinoController.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="ArduinoController:Make">
-        <MSBuild Projects="ArduinoController.cbproj" Targets="Make"/>
+        <MSBuild Projects="source\ArduinoController.cbproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
         <CallTarget Targets="mtkCommon;mtkMath;mtkIPC;atCore;VCLCommon;DuneComponents;atVCLCore;ArduinoController"/>

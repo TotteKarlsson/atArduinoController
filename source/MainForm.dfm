@@ -27,40 +27,6 @@ object Main: TMain
     Height = 89
     Align = alTop
     TabOrder = 0
-    object GroupBox2: TGroupBox
-      Left = 1
-      Top = 1
-      Width = 152
-      Height = 87
-      Align = alLeft
-      Caption = 'Section Count'
-      TabOrder = 0
-      object mSectionCountLbl: TIntLabel
-        Left = 40
-        Top = 31
-        Width = 10
-        Height = 23
-        Caption = '0'
-        Value = -1
-        TheFont.Charset = DEFAULT_CHARSET
-        TheFont.Color = clWindowText
-        TheFont.Height = -19
-        TheFont.Name = 'Tahoma'
-        TheFont.Style = []
-      end
-    end
-    object mResetCounterBtn: TArrayBotButton
-      Left = 153
-      Top = 1
-      Width = 136
-      Height = 87
-      Align = alLeft
-      Caption = 'Reset Counter'
-      ParentDoubleBuffered = True
-      TabOrder = 1
-      OnClick = mResetCounterBtnClick
-      SoundID = 'BUTTON_CLICK_4'
-    end
     object Button1: TArrayBotButton
       Left = 818
       Top = 1
@@ -69,7 +35,7 @@ object Main: TMain
       Align = alRight
       Caption = 'About'
       ParentDoubleBuffered = True
-      TabOrder = 2
+      TabOrder = 0
       OnClick = mAboutBtnClick
       SoundID = 'BUTTON_CLICK_4'
     end
@@ -82,17 +48,19 @@ object Main: TMain
       Align = alRight
       Caption = 'E&xit'
       ParentDoubleBuffered = True
-      TabOrder = 3
+      TabOrder = 1
       SoundID = 'BUTTON_CLICK_4'
     end
     object GroupBox1: TGroupBox
-      Left = 519
+      Left = 1
       Top = 1
       Width = 299
       Height = 87
-      Align = alRight
+      Align = alLeft
       Caption = 'Server'
-      TabOrder = 4
+      TabOrder = 2
+      ExplicitLeft = 3
+      ExplicitTop = -3
       object mArduinoServerPortE: TIntegerLabeledEdit
         Left = 184
         Top = 28
@@ -228,145 +196,20 @@ object Main: TMain
       TabOrder = 1
       object TabSheet1: TTabSheet
         Caption = 'Controls'
-        object GroupBox3: TGroupBox
-          Left = 3
-          Top = 85
-          Width = 303
-          Height = 268
-          Caption = 'Ribbon Separation'
-          TabOrder = 0
-          object mAutoPuffCB: TPropertyCheckBox
-            Left = 16
-            Top = 39
-            Width = 169
-            Height = 17
-            Caption = 'Enable Auto Puff'
-            TabOrder = 0
-            OnClick = mAutoPuffCBClick
-          end
-          object mAutoZeroCutCB: TPropertyCheckBox
-            Left = 16
-            Top = 72
-            Width = 169
-            Height = 17
-            Caption = 'Enable Zero Cut'
-            TabOrder = 1
-            OnClick = mAutoZeroCutCBClick
-          end
-          object mStartNewRibbonButton: TArrayBotButton
-            Left = 16
-            Top = 136
-            Width = 257
-            Height = 113
-            Caption = 'Start new ribbon'
-            TabOrder = 2
-            OnClick = mStartNewRibbonButtonClick
-            SoundID = 'BUTTON_CLICK_4'
-          end
-        end
-        object GroupBox6: TGroupBox
-          Left = 327
-          Top = 14
-          Width = 346
-          Height = 136
-          Caption = 'Puffer'
-          TabOrder = 1
-          object mPuffNowBtn: TArrayBotButton
-            Left = 15
-            Top = 37
-            Width = 150
-            Height = 80
-            Caption = 'Puff'
-            ParentDoubleBuffered = True
-            TabOrder = 0
-            OnClick = mPuffRelatedBtnClick
-            SoundID = 'short_beep_3'
-          end
-          object mEnablePuffBtn: TArrayBotButton
-            Left = 179
-            Top = 37
-            Width = 150
-            Height = 80
-            Caption = 'Enable Puffer'
-            ParentDoubleBuffered = True
-            TabOrder = 1
-            OnClick = mPuffRelatedBtnClick
-            SoundID = 'BUTTON_CLICK_4'
-          end
-        end
-        object mDesiredRibbonLengthE: TIntegerLabeledEdit
-          Left = 3
-          Top = 42
-          Width = 198
-          Height = 31
-          EditLabel.Width = 192
-          EditLabel.Height = 23
-          EditLabel.Caption = 'Desired Ribbon Length'
-          TabOrder = 2
-          Text = '-1'
-          OnKeyDown = mDesiredRibbonLengthEKeyDown
-          Value = -1
-        end
-        object GroupBox7: TGroupBox
-          Left = 327
-          Top = 152
-          Width = 346
-          Height = 201
-          Caption = 'Leica UC7'
-          TabOrder = 3
-          object Label1: TLabel
-            Left = 192
-            Top = 27
-            Width = 115
-            Height = 23
-            Caption = 'Cut Thickness'
-          end
-          object mSetZeroCutBtn: TArrayBotButton
-            Left = 16
-            Top = 102
-            Width = 145
-            Height = 80
-            Caption = 'Set Zero Cut'
-            TabOrder = 0
-            OnClick = mSetZeroCutBtnClick
-            SoundID = 'short_beep_3'
-          end
-          object mSetPresetCutBtn: TArrayBotButton
-            Left = 190
-            Top = 102
-            Width = 145
-            Height = 80
-            Caption = 'Set Preset Cut'
-            TabOrder = 1
-            OnClick = mSetPresetCutBtnClick
-            SoundID = 'short_beep_3'
-          end
-          object mLeicaCutThicknessLB: TComboBox
-            Left = 192
-            Top = 56
-            Width = 137
-            Height = 31
-            ItemIndex = 0
-            TabOrder = 2
-            Text = '0'
-            Items.Strings = (
-              '0'
-              '45'
-              '100'
-              '500'
-              '1000')
-          end
-        end
         object GroupBox4: TGroupBox
-          Left = 679
-          Top = 14
-          Width = 250
-          Height = 339
+          Left = 0
+          Top = 0
+          Width = 463
+          Height = 380
+          Align = alLeft
           Caption = 'Lights'
-          TabOrder = 4
+          TabOrder = 0
+          ExplicitLeft = 18
+          ExplicitTop = 14
+          ExplicitHeight = 339
           object mCoaxLightBtn: TArrayBotButton
-            Left = 24
-            Top = 138
+            Left = 240
+            Top = 37
             Width = 200
             Height = 79
             Caption = 'Flip Coax Light ON'
@@ -376,7 +219,7 @@ object Main: TMain
             SoundID = 'BUTTON_CLICK_4'
           end
           object mFrontBackLEDBtn: TArrayBotButton
-            Left = 24
+            Left = 18
             Top = 37
             Width = 200
             Height = 80
@@ -391,10 +234,6 @@ object Main: TMain
       object TabSheet2: TTabSheet
         Caption = 'Board Settings'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object mArduinoSB: TScrollBox
           Left = 0
           Top = 0

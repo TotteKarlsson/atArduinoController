@@ -128,11 +128,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DependentOn>forms\TAboutArduinoControllerForm.h</DependentOn>
             <BuildOrder>6</BuildOrder>
         </CppCompile>
-        <CppCompile Include="forms\TArduinoControllerSplashForm.cpp">
-            <Form>ArduinoControllerSplashForm</Form>
-            <DependentOn>forms\TArduinoControllerSplashForm.h</DependentOn>
-            <BuildOrder>10</BuildOrder>
-        </CppCompile>
         <CppCompile Include="frames\TAboutArduinoServerFrame.cpp">
             <Form>AboutArduinoServerFrame</Form>
             <DesignClass>TFrame</DesignClass>
@@ -150,12 +145,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DesignClass>TFrame</DesignClass>
             <DependentOn>frames\TLightsArduinoFrame.h</DependentOn>
             <BuildOrder>9</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="frames\TPufferArduinoBoardFrame.cpp">
-            <Form>PufferArduinoBoardFrame</Form>
-            <DesignClass>TFrame</DesignClass>
-            <DependentOn>frames\TPufferArduinoBoardFrame.h</DependentOn>
-            <BuildOrder>8</BuildOrder>
         </CppCompile>
         <CppCompile Include="frames\TSensorsArduinoFrame.cpp">
             <BuildOrder>11</BuildOrder>
@@ -176,8 +165,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <BuildOrder>11</BuildOrder>
         </CppCompile>
         <FormResources Include="MainForm.dfm"/>
-        <FormResources Include="frames\TPufferArduinoBoardFrame.dfm"/>
-        <FormResources Include="forms\TArduinoControllerSplashForm.dfm"/>
         <FormResources Include="forms\TAboutArduinoControllerForm.dfm"/>
         <FormResources Include="frames\TLightsArduinoFrame.dfm"/>
         <FormResources Include="frames\TArduinoBoardFrame.dfm"/>
