@@ -97,7 +97,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
             gSplashForm->Close();
         }
 
-		TStyleManager::TrySetStyle("Iceberg Classico");
+		TStyleManager::TrySetStyle("Amakrits");
 		Application->Title = "arduino_controller";
 		Application->CreateForm(__classid(TMain), &Main);
 		Application->Run();
