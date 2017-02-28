@@ -2,10 +2,11 @@
 #pragma hdrstop
 #include "TArduinoBoardFrame.h"
 #include "mtkBaseProperty.h"
-#pragma package(smart_init)
+
 #pragma link "TIntegerLabeledEdit"
 #pragma link "TSTDStringLabeledEdit"
 #pragma resource "*.dfm"
+#pragma package(smart_init)
 TArduinoBoardFrame *ArduinoBoardFrame;
 //---------------------------------------------------------------------------
 

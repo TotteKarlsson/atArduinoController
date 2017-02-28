@@ -38,7 +38,6 @@ __fastcall TMain::TMain(TComponent* Owner)
     mIniFile(joinPath(gAppDataFolder, "ArduinoController.ini"), true, true),
     mLogLevel(lAny),
     mArduinoServer(-1),
-    mPufferArduino(mArduinoServer.getPufferArduino()),
     mLightsArduino(mArduinoServer.getLightsArduino()),
     mSensorsArduino(mArduinoServer.getSensorsArduino())
 {
@@ -90,9 +89,6 @@ void __fastcall TMain::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall	TMain::setupUIFrames()
 {
-    mPufferArduino.setName("PUFFER_ARDUINO");
-
-
     mLightsArduino.setName("LIGHTS_ARDUINO");
     TLightsArduinoFrame* af2 = new TLightsArduinoFrame(mArduinoServer, mLightsArduino, mIniFile, this);
     af2->Parent =  mArduinoSB;

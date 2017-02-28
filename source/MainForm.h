@@ -124,7 +124,6 @@ class TMain : public TRegistryForm
         ArduinoServer					    mArduinoServer;
 
            									//References to arduino objects
-        PufferArduino&					    mPufferArduino;
         LightsArduino&					    mLightsArduino;
         SensorsArduino&					    mSensorsArduino;
 

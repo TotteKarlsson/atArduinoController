@@ -59,8 +59,6 @@ object Main: TMain
       Align = alLeft
       Caption = 'Server'
       TabOrder = 2
-      ExplicitLeft = 3
-      ExplicitTop = -3
       object mArduinoServerPortE: TIntegerLabeledEdit
         Left = 184
         Top = 28
@@ -204,9 +202,6 @@ object Main: TMain
           Align = alLeft
           Caption = 'Lights'
           TabOrder = 0
-          ExplicitLeft = 18
-          ExplicitTop = 14
-          ExplicitHeight = 339
           object mCoaxLightBtn: TArrayBotButton
             Left = 240
             Top = 37
@@ -234,6 +229,10 @@ object Main: TMain
       object TabSheet2: TTabSheet
         Caption = 'Board Settings'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object mArduinoSB: TScrollBox
           Left = 0
           Top = 0
