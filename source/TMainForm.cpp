@@ -70,7 +70,6 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 
 __fastcall TMainForm::~TMainForm()
 {
-
     mBottomPanelVisible = BottomPanel->Visible ;
     mBottomPanelHeight = BottomPanel->Height;
 

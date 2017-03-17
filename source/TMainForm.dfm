@@ -247,6 +247,8 @@ object MainForm: TMainForm
     ExplicitHeight = 496
     object TabSheet1: TTabSheet
       Caption = 'Controls'
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 980
       ExplicitHeight = 458
       object GroupBox4: TGroupBox
@@ -274,6 +276,10 @@ object MainForm: TMainForm
     object TabSheet2: TTabSheet
       Caption = 'Board Settings'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mArduinoSB: TScrollBox
         Left = 0
         Top = 0
