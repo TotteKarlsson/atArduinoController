@@ -2,7 +2,7 @@
 double sketchVersion = 1.0;
 void processByte(char ch); 
 
-int gNROfMessages = 12;
+int gNROfMessages = 13;
 const char* gMessages[] = 
 {
 //"þ5CA4",
@@ -18,6 +18,7 @@ const char* gMessages[] =
 //"!1531010BB8F6",
 //"!15200101C9",
 "!1540FF02AA",
+"!1420FF0033A4F6",
 "!1540FF00AC",
 "!1540FF01AB",
 "!1540FF03A9",
@@ -29,7 +30,7 @@ const char* gMessages[] =
 "!1540FF00AC",
 "!1540FF01AB",
 "!1540FF03A9",
-//"!15200000CB",
+"!15200000CB",
 //"!1440FF03792908",
 //"!1440FF03767FB5",
 //"!1440FF037640F4",

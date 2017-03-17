@@ -11,22 +11,24 @@
 #include "mtkRestartApplicationUtils.h"
 
 //---------------------------------------------------------------------------
-USEFORM("MainForm.cpp", Main);
+USEFORM("TMainForm.cpp", MainForm);
 USEFORM("forms\TAboutArduinoControllerForm.cpp", AboutArduinoControllerForm);
+USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
 USEFORM("frames\TLightsArduinoFrame.cpp", LightsArduinoFrame); /* TFrame: File Type */
 USEFORM("frames\TArduinoBoardFrame.cpp", ArduinoBoardFrame); /* TFrame: File Type */
-USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 using namespace mtk;
 using namespace std;
 
 extern string       gLogFileLocation            = "";
-extern string       gLogFileName                = "ArduinoController.log";
+extern string		gAppExeName					= "ArduinoController";
+extern string       gLogFileName                = gAppExeName + ".log";
+
 extern string 		gApplicationRegistryRoot  	= "\\Software\\Allen Institute\\ArduinoController\\0.5.0";
-extern string 		gAppDataFolder 				= joinPath(getSpecialFolder(CSIDL_LOCAL_APPDATA), "ArrayBot");
+extern string 		gAppDataFolder 				= joinPath(getSpecialFolder(CSIDL_LOCAL_APPDATA), gAppExeName);
 static HWND         gOtherAppWindow             = NULL;
 extern string       gDefaultAppTheme            = "Iceberg Classico";
-extern string       gRestartMutexName           = "arduinoControllerRestartMutex";
+extern string       gRestartMutexName           = gAppExeName + "RestartMutex";
 extern string       gFullDateTimeFormat         = "%Y-%m-%dT%H:%M:%S";
 extern string       gDateFormat                 = "%Y-%m-%d";
 extern string       gTimeFormat                 = "%H:%M:%S";
@@ -80,10 +82,9 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
-
-		TStyleManager::TrySetStyle("Amakrits");
+		TStyleManager::TrySetStyle("Obsidian");
 		Application->Title = "arduino_controller";
-		Application->CreateForm(__classid(TMain), &Main);
+		Application->CreateForm(__classid(TMainForm), &MainForm);
 		Application->Run();
 	}
 	catch (Exception &exception)

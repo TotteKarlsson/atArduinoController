@@ -123,7 +123,4 @@ BOOL CALLBACK FindOtherWindow(HWND hwnd, LPARAM lParam)
 	return TRUE;
 }
 
-void __fastcall TMain::mClearLogMemoBtnClick(TObject *Sender)
-{
-	infoMemo->Clear();
-}
+

@@ -1,5 +1,5 @@
-#ifndef MainFormH
-#define MainFormH
+#ifndef TMainFormH
+#define TMainFormH
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
@@ -43,7 +43,7 @@ class TXYZUnitFrame;
 class TSequencerButtonsFrame;
 
 //---------------------------------------------------------------------------
-class TTMainForm : public TRegistryForm
+class TMainForm : public TRegistryForm
 {
     __published:	// IDE-managed Components
         TActionList *ActionList1;
@@ -120,8 +120,8 @@ class TTMainForm : public TRegistryForm
 	  	void								onUpdatesFromArduinoServer(const string& msg);
 
 	public:
-		__fastcall 					        TTMainForm(TComponent* Owner);
-		__fastcall 					        ~TMainForm();
+		__fastcall 					        TMainForm(TComponent* Owner);
+		__fastcall 					        ~TMain();
 
 		void __fastcall                 	AppInBox(mlxStructMessage &Msg);
         ArduinoServer					    mArduinoServer;
@@ -134,5 +134,5 @@ class TTMainForm : public TRegistryForm
         END_MESSAGE_MAP(TForm)
 };
 
-extern PACKAGE TTMainForm *TMainForm;
+extern PACKAGE TMainForm *MainForm;
 #endif

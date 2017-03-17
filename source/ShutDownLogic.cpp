@@ -7,12 +7,6 @@ using namespace mtk;
 void __fastcall TMain::ShutDownTimerTimer(TObject *Sender)
 {
 	ShutDownTimer->Enabled = false;
-	if(mLogFileReader.isRunning())
-	{
-		Log(lDebug) << "Shutting down log file reader";
-		mLogFileReader.stop();
-	}
-
     if(UIUpdateTimer->Enabled)
     {
         UIUpdateTimer->Enabled = false;
@@ -30,6 +24,13 @@ void __fastcall TMain::ShutDownTimerTimer(TObject *Sender)
     }
 
     mFrames.clear();
+
+	if(mLogFileReader.isRunning())
+	{
+		Log(lDebug) << "Shutting down log file reader";
+		mLogFileReader.stop();
+	}
+
 	Close();
 }
 

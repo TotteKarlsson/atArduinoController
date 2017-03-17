@@ -4,6 +4,9 @@ This sketch expects an Adafruit Motor Shield for Arduino v2
 - Adjust LEDs by PWM on motor lines 1 (coax), 3 (front), 4 (back) - 
 - Removed sensor reads
 */
+/*March 2017 - TK removed all coax logic, preparing to add sensor code
+ * 
+*/
 
 double sketchVersion = 1.0;
 #include <Wire.h>
@@ -13,7 +16,6 @@ double sketchVersion = 1.0;
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
 // Name the "motor" ports by solenoid function:
-Adafruit_DCMotor *coaxLEDs  = AFMS.getMotor(1);
 Adafruit_DCMotor *frontLEDs = AFMS.getMotor(3);
 Adafruit_DCMotor *backLEDs  = AFMS.getMotor(4);
 
@@ -26,20 +28,20 @@ Adafruit_DCMotor *backLEDs  = AFMS.getMotor(4);
 
   //When controlling over Serial, the following
   //booleans are enabled
-  bool btn1(false);
-  bool btn2(false);  
-  bool btn3(false);
-  bool btn4(false);  
-  bool btn5(false);    
+  bool btn1(false); //Not in use
+  bool btn2(false);  //Not in use
+  
+  bool btn3(false); //Turn off LEDs
+  bool btn4(false); //Turn on LEDs 
+  bool btn5(false); //Flash/toggle the LEDs   
 
   //To control light intensity
-  int coaxDrive(128);
   int frontLEDDrive(128);
   int backLEDDrive(128);
 
   int flashFlag     = false;
   int flashToggle   = true;
-  int flashInterval = 500;
+  int flashInterval = 50;
   unsigned long flashMillis = millis();
     
   void checkPINStates();
@@ -53,12 +55,10 @@ void setup()
     AFMS.begin();  // create with the default frequency 1.6KHz
   
     // depower devices:
-    coaxLEDs->run(RELEASE);
     frontLEDs->run(RELEASE);
     backLEDs->run(RELEASE);
        
-    // set solenoid "on" duty cycles:
-    coaxLEDs->setSpeed(coaxDrive);
+    // set solenoid "on" duty cycles:    
     frontLEDs->setSpeed(frontLEDDrive);
     backLEDs->setSpeed(backLEDDrive);
      
@@ -81,20 +81,6 @@ void loop()
         processByte(Serial.read());
     }    
    
-    if (digitalRead(pushButton_1) || btn1 == true)
-    {
-        Serial << "[BUTTON_1_DOWN]";
-        coaxLEDs->run(RELEASE);
-        btn1 = false; 
-    }
-  
-    if (digitalRead(pushButton_2) || btn2 == true)
-    {
-        Serial << "[BUTTON_2_DOWN]";
-        coaxLEDs->run(FORWARD);
-        btn2 = false; 
-    }
-
     if (digitalRead(pushButton_3) || btn3 == true)
     {
         Serial << "[BUTTON_3_DOWN]";
@@ -150,12 +136,6 @@ void processByte(char ch)
         case '4':            btn4 = true ;        break;
         case '5':            btn5 = true ;        break;
         
-        case 'c': //Read next integer and use as the drive            
-            coaxDrive = Serial.parseInt();
-            coaxLEDs->setSpeed(coaxDrive);
-            Serial << "[COAX_DRIVE=" << coaxDrive << "]";            
-        break;
-
         case 'f':
             frontLEDDrive = Serial.parseInt();
             frontLEDs->setSpeed(frontLEDDrive);
@@ -190,8 +170,7 @@ void sendInfo()
     Serial << "[" << ((digitalRead(5)) ? "PIN_5=HIGH," : "PIN_5=LOW") << "]";    
     Serial << "[" << ((digitalRead(6)) ? "PIN_6=HIGH," : "PIN_6=LOW") << "]"; 
     Serial << "[" << ((digitalRead(7)) ? "PIN_7=HIGH," : "PIN_7=LOW") << "]";    
-    Serial << "[" << ((digitalRead(8)) ? "PIN_8=HIGH," : "PIN_8=LOW") << "]";        
-    Serial << "[COAX_DRIVE="<<coaxDrive<<"]";
+    Serial << "[" << ((digitalRead(8)) ? "PIN_8=HIGH," : "PIN_8=LOW") << "]";            
     Serial << "[FRONT_LED_DRIVE="<<frontLEDDrive<<"]";
     Serial << "[BACK_LED_DRIVE="<<backLEDDrive<<"]";
 }

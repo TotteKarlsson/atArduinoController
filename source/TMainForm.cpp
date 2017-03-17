@@ -1,6 +1,6 @@
 #include <vcl.h>
 #pragma hdrstop
-#include "MainForm.h"
+#include "TMainForm.h"
 #include "TMemoLogger.h"
 #include "mtkStringList.h"
 #include "atUtilities.h"
@@ -21,7 +21,7 @@
 #pragma link "TPropertyCheckBox"
 #pragma link "TArrayBotBtn"
 #pragma resource "*.dfm"
-TTMainForm *TMainForm;
+TMainForm *MainForm;
 
 extern string           gLogFileLocation;
 extern string           gLogFileName;
@@ -32,7 +32,7 @@ extern bool             gAppIsStartingUp;
 using namespace mtk;
 
 //---------------------------------------------------------------------------
-__fastcall TTMainForm::TTMainForm(TComponent* Owner)
+__fastcall TMainForm::TMainForm(TComponent* Owner)
 :
 	TRegistryForm(gApplicationRegistryRoot, "MainForm", Owner),
 	mLogFileReader(joinPath(getSpecialFolder(CSIDL_LOCAL_APPDATA), gAppExeName, gLogFileName), &logMsg),
@@ -57,14 +57,14 @@ __fastcall TTMainForm::TTMainForm(TComponent* Owner)
     mArduinoServer.assignOnUpdateCallBack(onUpdatesFromArduinoServer);
 }
 
-__fastcall TMain::~TTMainForm()
+__fastcall TMain::~TMainForm()
 {
 	mProperties.write();
     mIniFile.save();
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTMainForm::FormCreate(TObject *Sender)
+void __fastcall TMainForm::FormCreate(TObject *Sender)
 {
 	setupWindowTitle();
 	gAppIsStartingUp = false;
@@ -87,7 +87,7 @@ void __fastcall TTMainForm::FormCreate(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall	TTMainForm::setupUIFrames()
+void __fastcall	TMainForm::setupUIFrames()
 {
     mLightsArduino.setName("LIGHTS_ARDUINO");
     TLightsArduinoFrame* af2 = new TLightsArduinoFrame(mArduinoServer, mLightsArduino, mIniFile, this);
@@ -99,7 +99,7 @@ void __fastcall	TTMainForm::setupUIFrames()
 
 //This callback is called from the arduino server
 //Its purpose is to update the servers UI.
-void TTMainForm::onUpdatesFromArduinoServer(const string& new_msg)
+void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
 {
 	struct TLocalArgs
     {
@@ -120,14 +120,14 @@ void TTMainForm::onUpdatesFromArduinoServer(const string& new_msg)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTMainForm::UIUpdateTimerTimer(TObject *Sender)
+void __fastcall TMainForm::UIUpdateTimerTimer(TObject *Sender)
 {
    	mArduinoServerStartBtn->Caption = mArduinoServer.isRunning() 		? "Stop" : "Start";
 	mArduinoServerPortE->Enabled 	= !mArduinoServer.isRunning();
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTMainForm::mArduinoServerStartBtnClick(TObject *Sender)
+void __fastcall TMainForm::mArduinoServerStartBtnClick(TObject *Sender)
 {
 	if(mArduinoServerStartBtn->Caption == "Stop")
     {
@@ -140,7 +140,7 @@ void __fastcall TTMainForm::mArduinoServerStartBtnClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TTMainForm::LigthsBtnsClick(TObject *Sender)
+void __fastcall TMainForm::LigthsBtnsClick(TObject *Sender)
 {
 	TArrayBotButton* b = dynamic_cast<TArrayBotButton*>(Sender);
     if(b == mFrontBackLEDBtn )
@@ -161,7 +161,7 @@ void __fastcall TTMainForm::LigthsBtnsClick(TObject *Sender)
     }
 }
 
-void __fastcall TTMainForm::MiscBtnClick(TObject *Sender)
+void __fastcall TMainForm::MiscBtnClick(TObject *Sender)
 {
 	TBitBtn* b = dynamic_cast<TBitBtn*>(Sender);
     if(b == mClearLogMemoBtn)
@@ -176,7 +176,7 @@ void __fastcall TTMainForm::MiscBtnClick(TObject *Sender)
     }
 }
 
-void __fastcall TTMainForm::mShowBottomPanelBtnClick(TObject *Sender)
+void __fastcall TMainForm::mShowBottomPanelBtnClick(TObject *Sender)
 {
     this->Height += BottomPanel->Height;
 	BottomPanel->Visible = true;
