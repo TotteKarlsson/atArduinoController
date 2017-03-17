@@ -82,7 +82,6 @@ class TMainForm : public TRegistryForm
 	TIntegerLabeledEdit *mArduinoServerPortE;
 	TButton *mArduinoServerStartBtn;
 	TPanel *Panel2;
-	TPanel *CenterPanel;
 	TGroupBox *GroupBox4;
 	TToolBar *ToolBar2;
 	TBitBtn *mHideBottomPanelBtn;
@@ -113,6 +112,8 @@ class TMainForm : public TRegistryForm
         IniFile						        mIniFile;
         IniFileProperties  			        mProperties;
 		mtk::Property<mtk::LogLevel>        mLogLevel;
+		mtk::Property<int>        			mBottomPanelHeight;
+		mtk::Property<bool>        			mBottomPanelVisible;
 
 		void __fastcall		                OnException();
 
@@ -121,7 +122,7 @@ class TMainForm : public TRegistryForm
 
 	public:
 		__fastcall 					        TMainForm(TComponent* Owner);
-		__fastcall 					        ~TMain();
+		__fastcall 					        ~TMainForm();
 
 		void __fastcall                 	AppInBox(mlxStructMessage &Msg);
         ArduinoServer					    mArduinoServer;

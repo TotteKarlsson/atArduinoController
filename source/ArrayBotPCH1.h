@@ -15,7 +15,7 @@
 #include "mtkBaseProperty.h"
 #include "mtkMathUtils.h"
 
-#include "MainForm.h"
+#include "TMainForm.h"
 
 
 

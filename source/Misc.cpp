@@ -1,5 +1,5 @@
 #pragma hdrstop
-#include "MainForm.h"
+#include "TMainForm.h"
 #include "mtkLogger.h"
 #include "mtkVCLUtils.h"
 #include "TAboutArduinoControllerForm.h"
@@ -8,19 +8,19 @@ using namespace mtk;
 
 static HWND gOtherAppWindow = NULL;
 
-void __fastcall	TMain::OnException()
+void __fastcall	TMainForm::OnException()
 {
-	Log(lInfo) << "Exception TMain::OnException()";
+	Log(lInfo) << "Exception TMainForm::OnException()";
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::ApplicationEvents1Exception(TObject *Sender, Exception *E)
+void __fastcall TMainForm::ApplicationEvents1Exception(TObject *Sender, Exception *E)
 {
 	Log(lInfo) << "Application Exception...."<<stdstr(E->Message);
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::AppInBox(mlxStructMessage &msg)
+void __fastcall TMainForm::AppInBox(mlxStructMessage &msg)
 {
     if(msg.lparam == NULL)
     {
@@ -43,7 +43,7 @@ void __fastcall TMain::AppInBox(mlxStructMessage &msg)
 	}
 }
 
-void __fastcall TMain::LogLevelCBChange(TObject *Sender)
+void __fastcall TMainForm::LogLevelCBChange(TObject *Sender)
 {
 	if(LogLevelCB->ItemIndex == -1)
     {
@@ -57,14 +57,14 @@ void __fastcall TMain::LogLevelCBChange(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::FormShow(TObject *Sender)
+void __fastcall TMainForm::FormShow(TObject *Sender)
 {
 	this->Height = this->Height - 1;
 	this->Height = this->Height + 1;
 }
 
 //This one is called from the reader thread
-void __fastcall TMain::logMsg()
+void __fastcall TMainForm::logMsg()
 {
 	string& msg = mLogFileReader.getData();
     if(msg.size())
@@ -75,7 +75,7 @@ void __fastcall TMain::logMsg()
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
+void __fastcall TMainForm::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
 {
 	if(Key == vkEscape)
     {
@@ -83,14 +83,14 @@ void __fastcall TMain::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift
     }
 }
 
-void TMain::setupWindowTitle()
+void TMainForm::setupWindowTitle()
 {
 	string title = createWindowTitle("ArduinoController", Application);
 	this->Caption = vclstr(title);
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::mAboutBtnClick(TObject *Sender)
+void __fastcall TMainForm::mAboutBtnClick(TObject *Sender)
 {
 	//Show about frame
     TAboutArduinoControllerForm* af = new TAboutArduinoControllerForm(this);

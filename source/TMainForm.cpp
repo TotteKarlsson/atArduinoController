@@ -39,7 +39,9 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
     mIniFile(joinPath(gAppDataFolder, "ArduinoController.ini"), true, true),
     mLogLevel(lAny),
     mArduinoServer(-1),
-    mLightsArduino(mArduinoServer.getLightsArduino())
+    mLightsArduino(mArduinoServer.getLightsArduino()),
+	mBottomPanelVisible(true),
+	mBottomPanelHeight(100)
 {
 	TMemoLogger::mMemoIsEnabled = false;
    	mLogFileReader.start(true);
@@ -47,18 +49,31 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	//Setup UI/INI properties
     mProperties.setSection("UI");
 	mProperties.setIniFile(&mIniFile);
-	mProperties.add((BaseProperty*)  &mLogLevel.setup( 	                    		"LOG_LEVEL",    	 lAny));
-	mProperties.add((BaseProperty*)  &mArduinoServerPortE->getProperty()->setup(	"SERVER_PORT",    	 50000));
+	mProperties.add((BaseProperty*)  &mLogLevel.setup( 	                    		"LOG_LEVEL",    	 	lAny));
+	mProperties.add((BaseProperty*)  &mArduinoServerPortE->getProperty()->setup(	"SERVER_PORT",    	 	50000));
+	mProperties.add((BaseProperty*)  &mBottomPanelHeight.setup(						"BOTTOM_PANEL_HEIGHT",   100));
+	mProperties.add((BaseProperty*)  &mBottomPanelVisible.setup(  					"BOTTOM_PANEL_VIBILITY", true));
 
     mProperties.read();
 	mArduinoServerPortE->update();
 
+    BottomPanel->Visible 	= mBottomPanelVisible;
+    BottomPanel->Height 	= mBottomPanelHeight;
+
+    if(!BottomPanel->Visible)
+    {
+	    mShowBottomPanelBtn->Visible = true;
+    }
     //This will update the UI from a thread
     mArduinoServer.assignOnUpdateCallBack(onUpdatesFromArduinoServer);
 }
 
-__fastcall TMain::~TMainForm()
+__fastcall TMainForm::~TMainForm()
 {
+
+    mBottomPanelVisible = BottomPanel->Visible ;
+    mBottomPanelHeight = BottomPanel->Height;
+
 	mProperties.write();
     mIniFile.save();
 }

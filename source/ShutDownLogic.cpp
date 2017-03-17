@@ -1,10 +1,10 @@
 #pragma hdrstop
-#include "MainForm.h"
+#include "TMainForm.h"
 #include "mtkLogger.h"
 using namespace mtk;
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::ShutDownTimerTimer(TObject *Sender)
+void __fastcall TMainForm::ShutDownTimerTimer(TObject *Sender)
 {
 	ShutDownTimer->Enabled = false;
     if(UIUpdateTimer->Enabled)
@@ -35,7 +35,7 @@ void __fastcall TMain::ShutDownTimerTimer(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::FormCloseQuery(TObject *Sender, bool &CanClose)
+void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
 	Log(lInfo) << "Closing down....";
 
@@ -56,7 +56,7 @@ void __fastcall TMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMain::FormClose(TObject *Sender, TCloseAction &Action)
+void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	Log(lInfo) << "In FormClose";
 }
