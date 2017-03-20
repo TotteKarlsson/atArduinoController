@@ -47,7 +47,7 @@ void loop()
     //Read digital lines and send status over serial port so the host
     //can update its UI
     unsigned long currentReadTime = millis();
-    if(currentReadTime - lastReadTime > 1000)
+    if(currentReadTime - lastReadTime > (1000 * 10))
     {
         lastReadTime = currentReadTime;
         readEnvironmentalSensors(gDHT22_1, 1);    
