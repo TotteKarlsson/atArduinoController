@@ -12,7 +12,13 @@
         <Projects Include="P:\libs\dslib\Common\IPC\mtkIPC.cbproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="P:\libs\atapi\source\atCore.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="P:\libs\atapi\source\database\atDatabase.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="P:\libs\dslib\VCL\Common\VCLCommon.cbproj">
@@ -62,6 +68,15 @@
     <Target Name="mtkIPC:Make">
         <MSBuild Projects="P:\libs\dslib\Common\IPC\mtkIPC.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="mtkDataBase">
+        <MSBuild Projects="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj"/>
+    </Target>
+    <Target Name="mtkDataBase:Clean">
+        <MSBuild Projects="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="mtkDataBase:Make">
+        <MSBuild Projects="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="atCore">
         <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj"/>
     </Target>
@@ -70,6 +85,15 @@
     </Target>
     <Target Name="atCore:Make">
         <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="atDatabase">
+        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj"/>
+    </Target>
+    <Target Name="atDatabase:Clean">
+        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="atDatabase:Make">
+        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj" Targets="Make"/>
     </Target>
     <Target Name="VCLCommon">
         <MSBuild Projects="P:\libs\dslib\VCL\Common\VCLCommon.cbproj"/>
@@ -108,13 +132,13 @@
         <MSBuild Projects="source\ArduinoController.cbproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="mtkCommon;mtkMath;mtkIPC;atCore;VCLCommon;DuneComponents;atVCLCore;ArduinoController"/>
+        <CallTarget Targets="mtkCommon;mtkMath;mtkIPC;mtkDataBase;atCore;atDatabase;VCLCommon;DuneComponents;atVCLCore;ArduinoController"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="mtkCommon:Clean;mtkMath:Clean;mtkIPC:Clean;atCore:Clean;VCLCommon:Clean;DuneComponents:Clean;atVCLCore:Clean;ArduinoController:Clean"/>
+        <CallTarget Targets="mtkCommon:Clean;mtkMath:Clean;mtkIPC:Clean;mtkDataBase:Clean;atCore:Clean;atDatabase:Clean;VCLCommon:Clean;DuneComponents:Clean;atVCLCore:Clean;ArduinoController:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="mtkCommon:Make;mtkMath:Make;mtkIPC:Make;atCore:Make;VCLCommon:Make;DuneComponents:Make;atVCLCore:Make;ArduinoController:Make"/>
+        <CallTarget Targets="mtkCommon:Make;mtkMath:Make;mtkIPC:Make;mtkDataBase:Make;atCore:Make;atDatabase:Make;VCLCommon:Make;DuneComponents:Make;atVCLCore:Make;ArduinoController:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

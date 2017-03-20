@@ -67,10 +67,15 @@ void __fastcall TMainForm::FormShow(TObject *Sender)
 void __fastcall TMainForm::logMsg()
 {
 	string& msg = mLogFileReader.getData();
+
+    if(infoMemo->Lines->Count > 1000)
+    {
+		infoMemo->Clear();
+    }
+
     if(msg.size())
     {
     	infoMemo->Lines->Insert(0, vclstr(msg));
-	    mLogFileReader.purge();
     }
 }
 
@@ -121,6 +126,29 @@ BOOL CALLBACK FindOtherWindow(HWND hwnd, LPARAM lParam)
 	}
 
 	return TRUE;
+}
+
+void __fastcall TMainForm::MiscBtnClick(TObject *Sender)
+{
+	TBitBtn* b = dynamic_cast<TBitBtn*>(Sender);
+    if(b == mClearLogMemoBtn)
+    {
+		infoMemo->Clear();
+    }
+    else if(b == mHideBottomPanelBtn)
+    {
+		BottomPanel->Visible = false;
+	    mShowBottomPanelBtn->Visible = true;
+        this->Height -= BottomPanel->Height;
+    }
+}
+
+void __fastcall TMainForm::mShowBottomPanelBtnClick(TObject *Sender)
+{
+    this->Height += BottomPanel->Height;
+	BottomPanel->Visible = true;
+    mShowBottomPanelBtn->Visible = false;
+    Splitter1->Top = BottomPanel->Top - 1;
 }
 
 

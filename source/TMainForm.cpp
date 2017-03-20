@@ -20,6 +20,7 @@
 #pragma link "TIntLabel"
 #pragma link "TPropertyCheckBox"
 #pragma link "TArrayBotBtn"
+#pragma link "TATDBConnecrtionFrame"
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 
@@ -39,9 +40,11 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
     mIniFile(joinPath(gAppDataFolder, "ArduinoController.ini"), true, true),
     mLogLevel(lAny),
     mArduinoServer(-1),
-    mLightsArduino(mArduinoServer.getLightsArduino()),
+//    mLightsArduino(mArduinoServer.getLightsArduino()),
+    mSensorsArduino(mArduinoServer.getSensorsArduino()),
 	mBottomPanelVisible(true),
-	mBottomPanelHeight(100)
+	mBottomPanelHeight(100),
+    mATDB("atdb")
 {
 	TMemoLogger::mMemoIsEnabled = false;
    	mLogFileReader.start(true);
@@ -54,8 +57,18 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	mProperties.add((BaseProperty*)  &mBottomPanelHeight.setup(						"BOTTOM_PANEL_HEIGHT",   100));
 	mProperties.add((BaseProperty*)  &mBottomPanelVisible.setup(  					"BOTTOM_PANEL_VIBILITY", true));
 
+	TATDBConnectionFrame* f = TATDBConnectionFrame1;
+	mProperties.add((BaseProperty*)  &f->mServerIPE->getProperty()->setup( 	    	"MYSQL_SERVER_IP",              	"127.0.0.1"));
+	mProperties.add((BaseProperty*)  &f->mDBUserE->getProperty()->setup( 	   		"ATDB_USER_NAME",                   "none"));
+	mProperties.add((BaseProperty*)  &f->mPasswordE->getProperty()->setup( 	    	"ATDB_USER_PASSWORD",               "none"));
+	mProperties.add((BaseProperty*)  &f->mDatabaseE->getProperty()->setup( 	    	"ATDB_DB_NAME",    			        "none"));
+
     mProperties.read();
 	mArduinoServerPortE->update();
+    f->mDBUserE->update();
+    f->mPasswordE->update();
+    f->mDatabaseE->update();
+	f->mServerIPE->update();
 
     BottomPanel->Visible 	= mBottomPanelVisible;
     BottomPanel->Height 	= mBottomPanelHeight;
@@ -103,12 +116,21 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall	TMainForm::setupUIFrames()
 {
-    mLightsArduino.setName("LIGHTS_ARDUINO");
-    TLightsArduinoFrame* af2 = new TLightsArduinoFrame(mArduinoServer, mLightsArduino, mIniFile, this);
+//    mLightsArduino.setName("LIGHTS_ARDUINO");
+//    TLightsArduinoFrame* af2 = new TLightsArduinoFrame(mArduinoServer, mLightsArduino, mIniFile, this);
+//    af2->Parent =  mArduinoSB;
+//    af2->Align = alLeft;
+//    af2->ConnectBtnClick(NULL);
+//    mFrames.push_back(af2);
+
+    mSensorsArduino.setName("SENSORS_ARDUINO");
+    TSensorsArduinoFrame* af2 = new TSensorsArduinoFrame(mArduinoServer, mSensorsArduino, mIniFile, this);
     af2->Parent =  mArduinoSB;
     af2->Align = alLeft;
     af2->ConnectBtnClick(NULL);
     mFrames.push_back(af2);
+
+    TATDBConnectionFrame1->assignDBSession(mATDB);
 }
 
 //This callback is called from the arduino server
@@ -118,15 +140,30 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
 	struct TLocalArgs
     {
         string msg;
+        TMainForm* mf;
         void __fastcall onMsg()
         {
             //Parse the message
-        	StringList l(msg, '=');
+            mf->mArduinoServer.broadcast(msg);
+
+        	StringList l(msg, ',');
+			if(l.size() && l[0] == "DHT22_DATA")
+            {
+                if(mf->mATDB.isConnected())
+                {
+					if(l.size() == 4)
+                    {
+                    	//Post message to db populator
+	                    mf->mATDB.insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
+                    }
+                }
+            }
         }
     };
 
     TLocalArgs args;
     args.msg = new_msg;
+    args.mf = this;
 
 
     //This causes this function to be called in the UI thread
@@ -175,26 +212,10 @@ void __fastcall TMainForm::LigthsBtnsClick(TObject *Sender)
     }
 }
 
-void __fastcall TMainForm::MiscBtnClick(TObject *Sender)
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::TATDBConnectionFrame1mATDBServerBtnConnectClick(TObject *Sender)
 {
-	TBitBtn* b = dynamic_cast<TBitBtn*>(Sender);
-    if(b == mClearLogMemoBtn)
-    {
-		infoMemo->Clear();
-    }
-    else if(b == mHideBottomPanelBtn)
-    {
-		BottomPanel->Visible = false;
-	    mShowBottomPanelBtn->Visible = true;
-        this->Height -= BottomPanel->Height;
-    }
+	TATDBConnectionFrame1->mATDBServerBtnConnectClick(Sender);
 }
 
-void __fastcall TMainForm::mShowBottomPanelBtnClick(TObject *Sender)
-{
-    this->Height += BottomPanel->Height;
-	BottomPanel->Visible = true;
-    mShowBottomPanelBtn->Visible = false;
-    Splitter1->Top = BottomPanel->Top - 1;
-}
 

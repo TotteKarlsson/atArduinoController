@@ -32,6 +32,8 @@
 #include "TPropertyCheckBox.h"
 #include "TArrayBotBtn.h"
 #include "arduino/atLightsArduino.h"
+#include "database/atATDBServerSession.h"
+#include "TATDBConnecrtionFrame.h"
 
 using Poco::Timestamp;
 using mtk::IniFileProperties;
@@ -87,6 +89,8 @@ class TMainForm : public TRegistryForm
 	TBitBtn *mHideBottomPanelBtn;
 	TPanel *Panel1;
 	TButton *mShowBottomPanelBtn;
+	TTabSheet *TabSheet3;
+	TATDBConnectionFrame *TATDBConnectionFrame1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
     void __fastcall FormCreate(TObject *Sender);
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
@@ -101,6 +105,8 @@ class TMainForm : public TRegistryForm
 	void __fastcall mArduinoServerStartBtnClick(TObject *Sender);
 	void __fastcall LigthsBtnsClick(TObject *Sender);
 	void __fastcall mShowBottomPanelBtnClick(TObject *Sender);
+	void __fastcall TATDBConnectionFrame1mATDBServerBtnConnectClick(TObject *Sender);
+          
 
     private:
         LogFileReader                       mLogFileReader;
@@ -128,7 +134,12 @@ class TMainForm : public TRegistryForm
         ArduinoServer					    mArduinoServer;
 
            									//References to arduino objects
-        LightsArduino&					    mLightsArduino;
+//        LightsArduino&					    mLightsArduino;
+       	SensorsArduino&					    mSensorsArduino;
+
+        									//!The ATDBServerSession is a database
+                                            //!connection to the ATDB server
+		ATDBServerSession					mATDB;
 
         BEGIN_MESSAGE_MAP
             MESSAGE_HANDLER(UWM_MESSAGE,    mlxStructMessage,         AppInBox);

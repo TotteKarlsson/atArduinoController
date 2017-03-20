@@ -2,7 +2,7 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'Arduino Controller'
-  ClientHeight = 625
+  ClientHeight = 697
   ClientWidth = 990
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,7 +22,7 @@ object MainForm: TMainForm
   TextHeight = 23
   object Splitter1: TSplitter
     Left = 0
-    Top = 413
+    Top = 485
     Width = 990
     Height = 3
     Cursor = crVSplit
@@ -95,7 +95,7 @@ object MainForm: TMainForm
   end
   object mShowBottomPanelBtn: TButton
     Left = 0
-    Top = 606
+    Top = 678
     Width = 990
     Height = 19
     Align = alBottom
@@ -103,16 +103,14 @@ object MainForm: TMainForm
     TabOrder = 1
     Visible = False
     OnClick = mShowBottomPanelBtnClick
-    ExplicitTop = 688
   end
   object BottomPanel: TPanel
     Left = 0
-    Top = 416
+    Top = 488
     Width = 990
     Height = 190
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 523
     object Panel2: TPanel
       Left = 1
       Top = 1
@@ -121,8 +119,6 @@ object MainForm: TMainForm
       Align = alClient
       Caption = 'Panel2'
       TabOrder = 0
-      ExplicitWidth = 986
-      ExplicitHeight = 174
       object infoMemo: TMemo
         Left = 1
         Top = 34
@@ -139,8 +135,6 @@ object MainForm: TMainForm
         ScrollBars = ssBoth
         TabOrder = 0
         WordWrap = False
-        ExplicitWidth = 984
-        ExplicitHeight = 139
       end
       object Panel1: TPanel
         Left = 1
@@ -149,7 +143,6 @@ object MainForm: TMainForm
         Height = 33
         Align = alTop
         TabOrder = 1
-        ExplicitWidth = 984
         object ToolBar1: TToolBar
           Left = 1
           Top = 1
@@ -159,7 +152,6 @@ object MainForm: TMainForm
           ButtonHeight = 30
           Caption = 'ToolBar1'
           TabOrder = 0
-          ExplicitWidth = 947
           object mClearLogMemoBtn: TBitBtn
             Left = 0
             Top = 0
@@ -212,7 +204,6 @@ object MainForm: TMainForm
           AllowTextButtons = True
           TabOrder = 1
           Wrapable = False
-          ExplicitLeft = 948
           object mHideBottomPanelBtn: TBitBtn
             Left = 0
             Top = 0
@@ -237,29 +228,20 @@ object MainForm: TMainForm
     Left = 0
     Top = 89
     Width = 990
-    Height = 324
+    Height = 396
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 3
-    ExplicitLeft = 1
-    ExplicitTop = 1
-    ExplicitWidth = 988
-    ExplicitHeight = 496
     object TabSheet1: TTabSheet
       Caption = 'Controls'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 980
-      ExplicitHeight = 458
       object GroupBox4: TGroupBox
         Left = 0
         Top = 0
         Width = 463
-        Height = 286
+        Height = 358
         Align = alLeft
         Caption = 'Lights'
         TabOrder = 0
-        ExplicitHeight = 458
         object mFrontBackLEDBtn: TArrayBotButton
           Left = 18
           Top = 37
@@ -284,9 +266,91 @@ object MainForm: TMainForm
         Left = 0
         Top = 0
         Width = 982
-        Height = 286
+        Height = 358
         Align = alClient
         TabOrder = 0
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'ATDB'
+      ImageIndex = 2
+      inline TATDBConnectionFrame1: TATDBConnectionFrame
+        Left = 0
+        Top = 0
+        Width = 313
+        Height = 358
+        Align = alLeft
+        TabOrder = 0
+        ExplicitWidth = 313
+        ExplicitHeight = 358
+        inherited GroupBox1: TGroupBox
+          Width = 313
+          Height = 358
+          Align = alClient
+          ExplicitWidth = 313
+          ExplicitHeight = 358
+          inherited mServerIPE: TSTDStringLabeledEdit
+            Top = 57
+            Height = 31
+            EditLabel.Width = 77
+            EditLabel.Height = 23
+            EditLabel.ExplicitLeft = 16
+            EditLabel.ExplicitTop = 31
+            EditLabel.ExplicitWidth = 77
+            EditLabel.ExplicitHeight = 23
+            ExplicitTop = 57
+            ExplicitHeight = 31
+          end
+          inherited mDBUserE: TSTDStringLabeledEdit
+            Top = 120
+            Height = 31
+            EditLabel.Width = 37
+            EditLabel.Height = 23
+            EditLabel.ExplicitLeft = 16
+            EditLabel.ExplicitTop = 94
+            EditLabel.ExplicitWidth = 37
+            EditLabel.ExplicitHeight = 23
+            ExplicitTop = 120
+            ExplicitHeight = 31
+          end
+          inherited mPasswordE: TSTDStringLabeledEdit
+            Left = 175
+            Top = 120
+            Height = 31
+            EditLabel.Width = 78
+            EditLabel.Height = 23
+            EditLabel.ExplicitLeft = 175
+            EditLabel.ExplicitTop = 94
+            EditLabel.ExplicitWidth = 78
+            EditLabel.ExplicitHeight = 23
+            ExplicitLeft = 175
+            ExplicitTop = 120
+            ExplicitHeight = 31
+          end
+          inherited mATDBServerBtnConnect: TArrayBotButton
+            Left = 16
+            Top = 241
+            Width = 234
+            OnClick = TATDBConnectionFrame1mATDBServerBtnConnectClick
+            ExplicitLeft = 16
+            ExplicitTop = 241
+            ExplicitWidth = 234
+          end
+          inherited mDatabaseE: TSTDStringLabeledEdit
+            Left = 175
+            Top = 52
+            Height = 31
+            EditLabel.Width = 78
+            EditLabel.Height = 23
+            EditLabel.ExplicitLeft = 175
+            EditLabel.ExplicitTop = 26
+            EditLabel.ExplicitWidth = 78
+            EditLabel.ExplicitHeight = 23
+            ExplicitLeft = 175
+            ExplicitTop = 52
+            ExplicitHeight = 31
+          end
+        end
       end
     end
   end

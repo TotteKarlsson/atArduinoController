@@ -46,12 +46,12 @@
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>None</Manifest_File>
         <_TCHARMapping>wchar_t</_TCHARMapping>
-        <ILINK_LibraryPath>frames\;forms\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>P:\libs\atapi\source\vcl\frames\;p:\libs\atapi\source\database\;frames\;forms\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <ProjectType>CppVCLApplication</ProjectType>
         <Multithreaded>true</Multithreaded>
-        <IncludePath>frames\;forms\;forms;frames;$(IncludePath)</IncludePath>
+        <IncludePath>P:\libs\atapi\source\vcl\frames\;p:\libs\atapi\source\database\;frames\;forms\;forms;frames;$(IncludePath)</IncludePath>
         <AllPackageLibs>rtl.lib;vcl.lib;VCLCommon.lib;vclactnband.lib;vclx.lib;DuneComponents.lib;vclimg.lib;adortl.lib;dbrtl.lib;ArrayBotPackage.lib;atVCLCore.lib</AllPackageLibs>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
@@ -154,7 +154,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <BuildOrder>9</BuildOrder>
         </CppCompile>
         <CppCompile Include="frames\TSensorsArduinoFrame.cpp">
-            <BuildOrder>11</BuildOrder>
+            <BuildOrder>9</BuildOrder>
         </CppCompile>
         <CppCompile Include="Misc.cpp">
             <BuildOrder>3</BuildOrder>
@@ -171,11 +171,25 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="UIUtilities.cpp">
             <BuildOrder>11</BuildOrder>
         </CppCompile>
+        <CppCompile Include="p:\libs\atapi\source\database\atATDBServerSession.cpp">
+            <BuildOrder>10</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="p:\libs\atapi\source\database\atDBConnection.cpp">
+            <BuildOrder>11</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="P:\libs\atapi\source\vcl\frames\TATDBConnecrtionFrame.cpp">
+            <Form>ATDBConnectionFrame</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+            <DependentOn>P:\libs\atapi\source\vcl\frames\TATDBConnecrtionFrame.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
+        </CppCompile>
         <FormResources Include="TMainForm.dfm"/>
         <FormResources Include="forms\TAboutArduinoControllerForm.dfm"/>
         <FormResources Include="frames\TAboutArduinoServerFrame.dfm"/>
         <FormResources Include="frames\TLightsArduinoFrame.dfm"/>
         <FormResources Include="frames\TArduinoBoardFrame.dfm"/>
+        <FormResources Include="P:\libs\atapi\source\vcl\frames\TATDBConnecrtionFrame.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
