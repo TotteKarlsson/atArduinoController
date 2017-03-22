@@ -3,16 +3,16 @@
         <ProjectGuid>{14DD28EE-43BF-42B3-B467-1F3602F37384}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="P:\libs\dslib\Common\mtkCommon.cbproj">
+        <Projects Include="P:\libs\dsl\Common\mtkCommon.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\dslib\Common\Math\mtkMath.cbproj">
+        <Projects Include="P:\libs\dsl\Common\Math\mtkMath.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\dslib\Common\IPC\mtkIPC.cbproj">
+        <Projects Include="P:\libs\dsl\Common\IPC\mtkIPC.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj">
+        <Projects Include="P:\libs\dsl\Common\DataBase\mtkDataBase.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="P:\libs\atapi\source\atCore.cbproj">
@@ -21,10 +21,10 @@
         <Projects Include="P:\libs\atapi\source\database\atDatabase.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\dslib\VCL\Common\VCLCommon.cbproj">
+        <Projects Include="P:\libs\dsl\VCL\Common\VCLCommon.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\dslib\VCL\Components\DuneComponents.cbproj">
+        <Projects Include="P:\libs\dsl\VCL\Components\DuneComponents.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="P:\libs\atapi\source\vcl\atVCLCore.cbproj">
@@ -42,40 +42,40 @@
         </BorlandProject>
     </ProjectExtensions>
     <Target Name="mtkCommon">
-        <MSBuild Projects="P:\libs\dslib\Common\mtkCommon.cbproj"/>
+        <MSBuild Projects="P:\libs\dsl\Common\mtkCommon.cbproj"/>
     </Target>
     <Target Name="mtkCommon:Clean">
-        <MSBuild Projects="P:\libs\dslib\Common\mtkCommon.cbproj" Targets="Clean"/>
+        <MSBuild Projects="P:\libs\dsl\Common\mtkCommon.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="mtkCommon:Make">
-        <MSBuild Projects="P:\libs\dslib\Common\mtkCommon.cbproj" Targets="Make"/>
+        <MSBuild Projects="P:\libs\dsl\Common\mtkCommon.cbproj" Targets="Make"/>
     </Target>
     <Target Name="mtkMath">
-        <MSBuild Projects="P:\libs\dslib\Common\Math\mtkMath.cbproj"/>
+        <MSBuild Projects="P:\libs\dsl\Common\Math\mtkMath.cbproj"/>
     </Target>
     <Target Name="mtkMath:Clean">
-        <MSBuild Projects="P:\libs\dslib\Common\Math\mtkMath.cbproj" Targets="Clean"/>
+        <MSBuild Projects="P:\libs\dsl\Common\Math\mtkMath.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="mtkMath:Make">
-        <MSBuild Projects="P:\libs\dslib\Common\Math\mtkMath.cbproj" Targets="Make"/>
+        <MSBuild Projects="P:\libs\dsl\Common\Math\mtkMath.cbproj" Targets="Make"/>
     </Target>
     <Target Name="mtkIPC">
-        <MSBuild Projects="P:\libs\dslib\Common\IPC\mtkIPC.cbproj"/>
+        <MSBuild Projects="P:\libs\dsl\Common\IPC\mtkIPC.cbproj"/>
     </Target>
     <Target Name="mtkIPC:Clean">
-        <MSBuild Projects="P:\libs\dslib\Common\IPC\mtkIPC.cbproj" Targets="Clean"/>
+        <MSBuild Projects="P:\libs\dsl\Common\IPC\mtkIPC.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="mtkIPC:Make">
-        <MSBuild Projects="P:\libs\dslib\Common\IPC\mtkIPC.cbproj" Targets="Make"/>
+        <MSBuild Projects="P:\libs\dsl\Common\IPC\mtkIPC.cbproj" Targets="Make"/>
     </Target>
     <Target Name="mtkDataBase">
-        <MSBuild Projects="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj"/>
+        <MSBuild Projects="P:\libs\dsl\Common\DataBase\mtkDataBase.cbproj"/>
     </Target>
     <Target Name="mtkDataBase:Clean">
-        <MSBuild Projects="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj" Targets="Clean"/>
+        <MSBuild Projects="P:\libs\dsl\Common\DataBase\mtkDataBase.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="mtkDataBase:Make">
-        <MSBuild Projects="P:\libs\dslib\Common\DataBase\mtkDataBase.cbproj" Targets="Make"/>
+        <MSBuild Projects="P:\libs\dsl\Common\DataBase\mtkDataBase.cbproj" Targets="Make"/>
     </Target>
     <Target Name="atCore">
         <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj"/>
@@ -96,22 +96,22 @@
         <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj" Targets="Make"/>
     </Target>
     <Target Name="VCLCommon">
-        <MSBuild Projects="P:\libs\dslib\VCL\Common\VCLCommon.cbproj"/>
+        <MSBuild Projects="P:\libs\dsl\VCL\Common\VCLCommon.cbproj"/>
     </Target>
     <Target Name="VCLCommon:Clean">
-        <MSBuild Projects="P:\libs\dslib\VCL\Common\VCLCommon.cbproj" Targets="Clean"/>
+        <MSBuild Projects="P:\libs\dsl\VCL\Common\VCLCommon.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="VCLCommon:Make">
-        <MSBuild Projects="P:\libs\dslib\VCL\Common\VCLCommon.cbproj" Targets="Make"/>
+        <MSBuild Projects="P:\libs\dsl\VCL\Common\VCLCommon.cbproj" Targets="Make"/>
     </Target>
     <Target Name="DuneComponents">
-        <MSBuild Projects="P:\libs\dslib\VCL\Components\DuneComponents.cbproj"/>
+        <MSBuild Projects="P:\libs\dsl\VCL\Components\DuneComponents.cbproj"/>
     </Target>
     <Target Name="DuneComponents:Clean">
-        <MSBuild Projects="P:\libs\dslib\VCL\Components\DuneComponents.cbproj" Targets="Clean"/>
+        <MSBuild Projects="P:\libs\dsl\VCL\Components\DuneComponents.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="DuneComponents:Make">
-        <MSBuild Projects="P:\libs\dslib\VCL\Components\DuneComponents.cbproj" Targets="Make"/>
+        <MSBuild Projects="P:\libs\dsl\VCL\Components\DuneComponents.cbproj" Targets="Make"/>
     </Target>
     <Target Name="atVCLCore">
         <MSBuild Projects="P:\libs\atapi\source\vcl\atVCLCore.cbproj"/>
