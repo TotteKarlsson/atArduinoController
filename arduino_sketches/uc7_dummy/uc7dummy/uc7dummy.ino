@@ -75,7 +75,6 @@ class UC7
                     UC7() : mMotorStatus(0), mFeedRate(100){}
         int mMotorStatus;
         int mFeedRate;
-            
 };
 
 UC7 gUC7;
