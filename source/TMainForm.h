@@ -33,7 +33,7 @@
 #include "TArrayBotBtn.h"
 #include "arduino/atLightsArduino.h"
 #include "database/atATDBServerSession.h"
-#include "TATDBConnecrtionFrame.h"
+#include "TATDBConnectionFrame.h"
 
 using Poco::Timestamp;
 using mtk::IniFileProperties;

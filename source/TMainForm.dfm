@@ -258,10 +258,6 @@ object MainForm: TMainForm
     object TabSheet2: TTabSheet
       Caption = 'Board Settings'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mArduinoSB: TScrollBox
         Left = 0
         Top = 0
@@ -280,6 +276,7 @@ object MainForm: TMainForm
         Width = 313
         Height = 358
         Align = alLeft
+        AutoSize = True
         TabOrder = 0
         ExplicitWidth = 313
         ExplicitHeight = 358

@@ -11,6 +11,7 @@
 #include "atExceptions.h"
 #include "TLightsArduinoFrame.h"
 #include "TSensorsArduinoFrame.h"
+#include "TATDBDataModule.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TIntegerLabeledEdit"
@@ -20,7 +21,7 @@
 #pragma link "TIntLabel"
 #pragma link "TPropertyCheckBox"
 #pragma link "TArrayBotBtn"
-#pragma link "TATDBConnecrtionFrame"
+#pragma link "TATDBConnectionFrame"
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 
@@ -130,7 +131,7 @@ void __fastcall	TMainForm::setupUIFrames()
     af2->ConnectBtnClick(NULL);
     mFrames.push_back(af2);
 
-    TATDBConnectionFrame1->assignDBSession(mATDB);
+//    TATDBConnectionFrame1->assignDBSession(mATDB);
 }
 
 //This callback is called from the arduino server

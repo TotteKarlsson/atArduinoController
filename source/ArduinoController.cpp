@@ -9,14 +9,13 @@
 #include "atExceptions.h"
 #include "TArduinoControllerSplashForm.h"
 #include "mtkRestartApplicationUtils.h"
-
 //---------------------------------------------------------------------------
 USEFORM("TMainForm.cpp", MainForm);
 USEFORM("forms\TAboutArduinoControllerForm.cpp", AboutArduinoControllerForm);
 USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
 USEFORM("frames\TLightsArduinoFrame.cpp", LightsArduinoFrame); /* TFrame: File Type */
 USEFORM("frames\TArduinoBoardFrame.cpp", ArduinoBoardFrame); /* TFrame: File Type */
-USEFORM("P:\libs\atapi\source\vcl\frames\TATDBConnecrtionFrame.cpp", ATDBConnectionFrame); /* TFrame: File Type */
+USEFORM("P:\libs\atapi\source\vcl\datamodules\TATDBDataModule.cpp", atdbDM); /* TDataModule: File Type */
 //---------------------------------------------------------------------------
 using namespace mtk;
 using namespace std;
@@ -85,6 +84,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->MainFormOnTaskBar = true;
 		TStyleManager::TrySetStyle("Obsidian");
 		Application->Title = "arduino_controller";
+		Application->CreateForm(__classid(TatdbDM), &atdbDM);
 		Application->CreateForm(__classid(TMainForm), &MainForm);
 		Application->Run();
 	}
