@@ -78,6 +78,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
     {
 	    mShowBottomPanelBtn->Visible = true;
     }
+
     //This will update the UI from a thread
     mArduinoServer.assignOnUpdateCallBack(onUpdatesFromArduinoServer);
 }
