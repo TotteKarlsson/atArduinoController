@@ -6,16 +6,18 @@
 #include <Vcl.Themes.hpp>
 #include "mtkLogger.h"
 #include "mtkVCLUtils.h"
-#include "atExceptions.h"
+#include "Core/atExceptions.h"
 #include "TArduinoControllerSplashForm.h"
 #include "mtkRestartApplicationUtils.h"
 //---------------------------------------------------------------------------
 USEFORM("TMainForm.cpp", MainForm);
-USEFORM("forms\TAboutArduinoControllerForm.cpp", AboutArduinoControllerForm);
+USEFORM("P:\libs\atapi\source\vcl\frames\TATDBConnectionFrame.cpp", ATDBConnectionFrame); /* TFrame: File Type */
+USEFORM("P:\libs\atapi\source\vcl\datamodules\TATDBSensorsDataModule.cpp", atdbSensorsDM); /* TDataModule: File Type */
+USEFORM("P:\libs\atapi\source\vcl\datamodules\TATDBDataModule.cpp", atdbDM); /* TDataModule: File Type */
 USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
+USEFORM("forms\TAboutArduinoControllerForm.cpp", AboutArduinoControllerForm);
 USEFORM("frames\TLightsArduinoFrame.cpp", LightsArduinoFrame); /* TFrame: File Type */
 USEFORM("frames\TArduinoBoardFrame.cpp", ArduinoBoardFrame); /* TFrame: File Type */
-USEFORM("P:\libs\atapi\source\vcl\datamodules\TATDBDataModule.cpp", atdbDM); /* TDataModule: File Type */
 //---------------------------------------------------------------------------
 using namespace mtk;
 using namespace std;
@@ -86,6 +88,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->Title = "arduino_controller";
 		Application->CreateForm(__classid(TatdbDM), &atdbDM);
 		Application->CreateForm(__classid(TMainForm), &MainForm);
+		Application->CreateForm(__classid(TatdbSensorsDM), &atdbSensorsDM);
 		Application->Run();
 	}
 	catch (Exception &exception)
@@ -114,15 +117,17 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 #pragma comment(lib, "mtkCommon.lib")
 #pragma comment(lib, "mtkMath.lib")
 #pragma comment(lib, "mtkIPC.lib")
-#pragma comment(lib, "mtkDataBase.lib")
 
 #pragma comment(lib, "libmysqlB.lib")
 #pragma comment(lib, "atCore.lib")
-#pragma comment(lib, "atDataBase.lib")
-//#pragma comment(lib, "atDBCore-static.lib")
+#pragma comment(lib, "atSerialAPI.lib")
+#pragma comment(lib, "atArduino.lib")
+
+//Third Parties
 #pragma comment(lib, "poco_foundation-static.lib")
 #pragma comment(lib, "poco_mysql_connector-static.lib")
 #pragma comment(lib, "poco_data-static.lib")
 #pragma comment(lib, "tinyxml2-static.lib")
+
 #pragma comment(lib, "VCLCommon.bpi")
 #pragma comment(lib, "DuneForms.bpi")

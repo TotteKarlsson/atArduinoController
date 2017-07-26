@@ -15,16 +15,22 @@
         <Projects Include="P:\libs\dsl\Common\DataBase\mtkDataBase.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\atapi\source\atCore.cbproj">
+        <Projects Include="P:\libs\dsl\VCL\Common\VCLCommon.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="P:\libs\dsl\VCL\Components\DuneComponents.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="P:\libs\atapi\source\core\atCore.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="P:\libs\atapi\source\database\atDatabase.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\dsl\VCL\Common\VCLCommon.cbproj">
+        <Projects Include="P:\libs\atapi\source\arduino\atArduino.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="P:\libs\dsl\VCL\Components\DuneComponents.cbproj">
+        <Projects Include="P:\libs\atapi\source\serial\atSerialAPI.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="P:\libs\atapi\source\vcl\atVCLCore.cbproj">
@@ -77,24 +83,6 @@
     <Target Name="mtkDataBase:Make">
         <MSBuild Projects="P:\libs\dsl\Common\DataBase\mtkDataBase.cbproj" Targets="Make"/>
     </Target>
-    <Target Name="atCore">
-        <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj"/>
-    </Target>
-    <Target Name="atCore:Clean">
-        <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj" Targets="Clean"/>
-    </Target>
-    <Target Name="atCore:Make">
-        <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj" Targets="Make"/>
-    </Target>
-    <Target Name="atDatabase">
-        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj"/>
-    </Target>
-    <Target Name="atDatabase:Clean">
-        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj" Targets="Clean"/>
-    </Target>
-    <Target Name="atDatabase:Make">
-        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj" Targets="Make"/>
-    </Target>
     <Target Name="VCLCommon">
         <MSBuild Projects="P:\libs\dsl\VCL\Common\VCLCommon.cbproj"/>
     </Target>
@@ -112,6 +100,42 @@
     </Target>
     <Target Name="DuneComponents:Make">
         <MSBuild Projects="P:\libs\dsl\VCL\Components\DuneComponents.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="atCore">
+        <MSBuild Projects="P:\libs\atapi\source\core\atCore.cbproj"/>
+    </Target>
+    <Target Name="atCore:Clean">
+        <MSBuild Projects="P:\libs\atapi\source\core\atCore.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="atCore:Make">
+        <MSBuild Projects="P:\libs\atapi\source\core\atCore.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="atDatabase">
+        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj"/>
+    </Target>
+    <Target Name="atDatabase:Clean">
+        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="atDatabase:Make">
+        <MSBuild Projects="P:\libs\atapi\source\database\atDatabase.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="atArduino">
+        <MSBuild Projects="P:\libs\atapi\source\arduino\atArduino.cbproj"/>
+    </Target>
+    <Target Name="atArduino:Clean">
+        <MSBuild Projects="P:\libs\atapi\source\arduino\atArduino.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="atArduino:Make">
+        <MSBuild Projects="P:\libs\atapi\source\arduino\atArduino.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="atSerialAPI">
+        <MSBuild Projects="P:\libs\atapi\source\serial\atSerialAPI.cbproj"/>
+    </Target>
+    <Target Name="atSerialAPI:Clean">
+        <MSBuild Projects="P:\libs\atapi\source\serial\atSerialAPI.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="atSerialAPI:Make">
+        <MSBuild Projects="P:\libs\atapi\source\serial\atSerialAPI.cbproj" Targets="Make"/>
     </Target>
     <Target Name="atVCLCore">
         <MSBuild Projects="P:\libs\atapi\source\vcl\atVCLCore.cbproj"/>
@@ -132,13 +156,13 @@
         <MSBuild Projects="source\ArduinoController.cbproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="mtkCommon;mtkMath;mtkIPC;mtkDataBase;atCore;atDatabase;VCLCommon;DuneComponents;atVCLCore;ArduinoController"/>
+        <CallTarget Targets="mtkCommon;mtkMath;mtkIPC;mtkDataBase;VCLCommon;DuneComponents;atCore;atDatabase;atArduino;atSerialAPI;atVCLCore;ArduinoController"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="mtkCommon:Clean;mtkMath:Clean;mtkIPC:Clean;mtkDataBase:Clean;atCore:Clean;atDatabase:Clean;VCLCommon:Clean;DuneComponents:Clean;atVCLCore:Clean;ArduinoController:Clean"/>
+        <CallTarget Targets="mtkCommon:Clean;mtkMath:Clean;mtkIPC:Clean;mtkDataBase:Clean;VCLCommon:Clean;DuneComponents:Clean;atCore:Clean;atDatabase:Clean;atArduino:Clean;atSerialAPI:Clean;atVCLCore:Clean;ArduinoController:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="mtkCommon:Make;mtkMath:Make;mtkIPC:Make;mtkDataBase:Make;atCore:Make;atDatabase:Make;VCLCommon:Make;DuneComponents:Make;atVCLCore:Make;ArduinoController:Make"/>
+        <CallTarget Targets="mtkCommon:Make;mtkMath:Make;mtkIPC:Make;mtkDataBase:Make;VCLCommon:Make;DuneComponents:Make;atCore:Make;atDatabase:Make;atArduino:Make;atSerialAPI:Make;atVCLCore:Make;ArduinoController:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

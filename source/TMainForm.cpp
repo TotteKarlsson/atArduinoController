@@ -3,12 +3,12 @@
 #include "TMainForm.h"
 #include "TMemoLogger.h"
 #include "mtkStringList.h"
-#include "atUtilities.h"
+#include "Core/atUtilities.h"
 #include "mtkVCLUtils.h"
 #include "mtkLogger.h"
 #include <bitset>
 #include "mtkMathUtils.h"
-#include "atExceptions.h"
+#include "Core/atExceptions.h"
 #include "TLightsArduinoFrame.h"
 #include "TSensorsArduinoFrame.h"
 #include "TATDBDataModule.h"
@@ -23,6 +23,7 @@
 #pragma link "TArrayBotBtn"
 #pragma link "TATDBConnectionFrame"
 #pragma resource "*.dfm"
+//---------------------------------------------------------------------------
 TMainForm *MainForm;
 
 extern string           gLogFileLocation;
@@ -44,8 +45,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 //    mLightsArduino(mArduinoServer.getLightsArduino()),
     mSensorsArduino(mArduinoServer.getSensorsArduino()),
 	mBottomPanelVisible(true),
-	mBottomPanelHeight(100),
-    mATDB("atdb")
+	mBottomPanelHeight(100)
 {
 	TMemoLogger::mMemoIsEnabled = false;
    	mLogFileReader.start(true);
@@ -113,6 +113,14 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 
 	//Setup frames for the Arduinos
 	setupUIFrames();
+
+    if(atdbDM)
+    {
+	    atdbDM->SQLConnection1->AfterConnect 	= afterDBServerConnect;
+    	atdbDM->SQLConnection1->AfterDisconnect = afterDBServerDisconnect;
+		TATDBConnectionFrame1->mATDBServerBtnConnectClick(NULL);
+    }
+
 }
 
 //---------------------------------------------------------------------------
@@ -131,8 +139,6 @@ void __fastcall	TMainForm::setupUIFrames()
     af2->Align = alLeft;
     af2->ConnectBtnClick(NULL);
     mFrames.push_back(af2);
-
-//    TATDBConnectionFrame1->assignDBSession(mATDB);
 }
 
 //This callback is called from the arduino server
@@ -151,12 +157,13 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
         	StringList l(msg, ',');
 			if(l.size() && l[0] == "DHT22_DATA")
             {
-                if(mf->mATDB.isConnected())
+                if(atdbSensorsDM)
                 {
 					if(l.size() == 4)
                     {
                     	//Post message to db populator
-	                    mf->mATDB.insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
+//	                    mf->mATDB.insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
+                        atdbSensorsDM->insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
                     }
                 }
             }
@@ -177,6 +184,7 @@ void __fastcall TMainForm::UIUpdateTimerTimer(TObject *Sender)
 {
    	mArduinoServerStartBtn->Caption = mArduinoServer.isRunning() 		? "Stop" : "Start";
 	mArduinoServerPortE->Enabled 	= !mArduinoServer.isRunning();
+    NrOfServerClients->setValue(mArduinoServer.getNumberOfClients());
 }
 
 //---------------------------------------------------------------------------
@@ -184,7 +192,7 @@ void __fastcall TMainForm::mArduinoServerStartBtnClick(TObject *Sender)
 {
 	if(mArduinoServerStartBtn->Caption == "Stop")
     {
-    	mArduinoServer.stop();
+    	mArduinoServer.shutDown();
     }
     else
     {
@@ -220,4 +228,35 @@ void __fastcall TMainForm::TATDBConnectionFrame1mATDBServerBtnConnectClick(TObje
 	TATDBConnectionFrame1->mATDBServerBtnConnectClick(Sender);
 }
 
+
+//---------------------------------------------------------------------------
+void __fastcall	TMainForm::afterDBServerConnect(System::TObject* Sender)
+{
+	Log(lInfo) << "Succesfully connected to DB Server";
+
+	atdbDM->afterConnect();
+	TATDBConnectionFrame1->afterConnect();
+
+//	//Setup UI
+//    mUsersCB->KeyValue = mDBUserID.getValue();
+//    mBlockProcessIDCB->KeyValue = mProcessID.getValue();
+//    BlockIDCB->KeyValue = mBlockID.getValue();
+//    enableDisableGroupBox(BlockSelectionGB, true);
+//    enableDisableGroupBox(BlocksGB, true);
+//    enableDisableGroupBox(RibbonsDataGB, true);
+//
+//    mRegisterRibbonBtn->Enabled = true;
+}
+
+//---------------------------------------------------------------------------
+void __fastcall	TMainForm::afterDBServerDisconnect(System::TObject* Sender)
+{
+	Log(lInfo) << "Disconnected from the DB Server";
+	TATDBConnectionFrame1->afterDisconnect();
+
+//    enableDisableGroupBox(BlocksGB, false);
+//    enableDisableGroupBox(BlockSelectionGB, false);
+//    enableDisableGroupBox(RibbonsDataGB, false);
+//    mRegisterRibbonBtn->Enabled = false;
+}
 

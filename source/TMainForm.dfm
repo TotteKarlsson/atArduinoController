@@ -64,11 +64,31 @@ object MainForm: TMainForm
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
-      Width = 299
+      Width = 528
       Height = 87
       Align = alLeft
-      Caption = 'Socket Server'
+      Caption = 'Arduino Server'
       TabOrder = 2
+      object NrOfServerClients: TIntLabel
+        Left = 411
+        Top = 31
+        Width = 10
+        Height = 23
+        Caption = '1'
+        Value = 1
+        TheFont.Charset = DEFAULT_CHARSET
+        TheFont.Color = clWindowText
+        TheFont.Height = -19
+        TheFont.Name = 'Tahoma'
+        TheFont.Style = []
+      end
+      object Label1: TLabel
+        Left = 296
+        Top = 31
+        Width = 109
+        Height = 23
+        Caption = 'Nr of Clients:'
+      end
       object mArduinoServerPortE: TIntegerLabeledEdit
         Left = 184
         Top = 28
@@ -280,7 +300,7 @@ object MainForm: TMainForm
         TabOrder = 0
         ExplicitWidth = 313
         ExplicitHeight = 358
-        inherited GroupBox1: TGroupBox
+        inherited GBox1: TGroupBox
           Width = 313
           Height = 358
           Align = alClient
@@ -403,8 +423,8 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 100
     OnTimer = ShutDownTimerTimer
-    Left = 260
-    Top = 400
+    Left = 436
+    Top = 376
   end
   object ApplicationEvents1: TApplicationEvents
     OnException = ApplicationEvents1Exception
@@ -415,7 +435,7 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 300
     OnTimer = UIUpdateTimerTimer
-    Left = 260
-    Top = 464
+    Left = 436
+    Top = 304
   end
 end

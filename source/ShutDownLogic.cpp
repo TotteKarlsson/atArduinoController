@@ -17,6 +17,14 @@ void __fastcall TMainForm::ShutDownTimerTimer(TObject *Sender)
     	mArduinoServer.shutDown();
     }
 
+    mArduinoServer.assignOnUpdateCallBack(NULL);
+
+    if(atdbDM->SQLConnection1->Connected)
+    {
+    	atdbDM->SQLConnection1->Connected = false;
+	    atdbDM->SQLConnection1->Close();
+    }
+
     //This will save any ini parameters in the frame
     for(int i = 0; i < mFrames.size(); i++)
     {
@@ -46,6 +54,7 @@ void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
     //Timer fire    if(
    	CanClose = (mFrames.size()
             	|| mArduinoServer.isRunning()
+		        || atdbDM->SQLConnection1->Connected
                 ) ? false : true;
 
 

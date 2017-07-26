@@ -2,7 +2,7 @@
 double sketchVersion = 1.0;
 void processByte(char ch); 
 
-int gNROfMessages = 13;
+int gNROfMessages = 4;
 const char* gMessages[] = 
 {
 //"þ5CA4",
@@ -17,20 +17,16 @@ const char* gMessages[] =
 //"!153001006456",
 //"!1531010BB8F6",
 //"!15200101C9",
-"!1540FF02AA",
-"!1420FF0033A4F6",
+//"!1540FF02AA",
+//"!1420FF0033A4F6",
 "!1540FF00AC",
 "!1540FF01AB",
 "!1540FF03A9",
 "!1540FF02AA",
-"!1540FF00AC",
-"!1540FF01AB",
-"!1540FF03A9",
-"!1540FF02AA",
-"!1540FF00AC",
-"!1540FF01AB",
-"!1540FF03A9",
-"!15200000CB",
+//"!1540FF00AC",
+//"!1540FF01AB",
+//"!1540FF03A9",
+//"!15200000CB",
 //"!1440FF03792908",
 //"!1440FF03767FB5",
 //"!1440FF037640F4",
@@ -64,7 +60,7 @@ int gMessageIndex = 0;
 //Allow nice syntax for serial printing
 template<class T> inline Print &operator <<(Print &o, T arg) { o.print(arg); return o; }
 
-unsigned long   gSimulationSpeed        = 300;
+unsigned long   gSimulationSpeed        = 3000;
 bool            gHasMessage            = false;
 String          gMessage;
 unsigned long   gLastReadTime = millis();
@@ -72,7 +68,7 @@ unsigned long   gLastReadTime = millis();
 class UC7
 {
     public:
-                    UC7() : mMotorStatus(0), mFeedRate(100){}
+        UC7() : mMotorStatus(0), mFeedRate(100){}
         int mMotorStatus;
         int mFeedRate;
 };
@@ -92,10 +88,6 @@ void loop()
     {
         String msg(buffer);
         handleMessage(msg);
-        
-        //Serial.print("You entered: \"");
-        //Serial.print(buffer);
-        //Serial.println("\"");
     }
     
     unsigned long currentTime = millis();
