@@ -1,3 +1,15 @@
+Release 0.5.1 (Aug 3)
+=======================
+* Fixed some shutdown thread issues
+* Added int label showing number of connected server clients
+* Removed dependency on non DBExpress database code
+* Added DBExpress db code in order to populate environmental data in the database
+* Refactored dslib -> dsl
+* Changed temp reading to every 10 seconds
+* Getting environmental sensor logging
+* Added ability to hide bottom log panel
+* Removed code related to the Puffer Arduino
+
 Release 0.5.0 (Feb 27)
 =======================
-* Initial commit of the Arduino Cotntroller application code, from ArrayBot.
+* Initial commit of the Arduino Controller application code, from ArrayBot.
