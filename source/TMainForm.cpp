@@ -167,6 +167,8 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
                 {
                 	int val = toInt(v1[1]);
                 	mf->LEDDriveE->setValue(val);
+                    mf->DriveTB->Tag = 1;
+                    mf->DriveTB->Position = val;
                 }
 
             	StringList v2(l[2],'=');
@@ -272,7 +274,14 @@ void __fastcall TMainForm::DriveTBChange(TObject *Sender)
     if(DriveTB->Position != pos)
     {
         pos = DriveTB->Position;
-		mLightsArduino.setLEDDrive(pos);
+        if(DriveTB->Tag != 1)
+        {
+			mLightsArduino.setLEDDrive(pos);
+        }
+        else
+        {
+	        DriveTB->Tag = 0;
+        }
     }
 }
 
