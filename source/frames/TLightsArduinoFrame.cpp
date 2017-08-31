@@ -31,6 +31,7 @@ __fastcall TLightsArduinoFrame::~TLightsArduinoFrame()
 void TLightsArduinoFrame::init()
 {
     stringstream msg;
+    msg << "i";
     mArduinoDevice.send(msg.str());
 }
 

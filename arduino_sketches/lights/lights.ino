@@ -8,7 +8,7 @@ This sketch expects an Adafruit Motor Shield for Arduino v2
  * 
 */
 
-double sketchVersion = 1.0;
+double sketchVersion = 1.1;
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 
@@ -19,19 +19,18 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *frontLEDs = AFMS.getMotor(3);
 
   // Name the input lines by pushbutton order:
-  int pushButton_3 = 4;
-  int pushButton_4 = 5;
+  int pushButton_OFF = 4;
+  int pushButton_ON = 5;
 
+  int LEDOn = false;
 
   //When controlling over Serial, the following
   //booleans are enabled 
-  bool btn4(false); //Turn on LEDs  
   bool btn3(false); //Turn off LEDs
+  bool btn4(false); //Turn on LEDs  
   
   //To control light intensity
   int frontLEDDrive(128);
-      
-  void checkPINStates();
   void processByte(char ch); 
 
   //Allow nice syntax for serial printing
@@ -43,16 +42,18 @@ void setup()
   
     // depower devices:
     frontLEDs->run(RELEASE);
+    LEDOn = false;
          
     // set solenoid "on" duty cycles:    
     frontLEDs->setSpeed(frontLEDDrive);
          
     // set the pushbutton pins as inputs:
-    pinMode(pushButton_3, INPUT); // front OFF
-    pinMode(pushButton_4, INPUT); // front ON
+    pinMode(pushButton_OFF, INPUT); // LED OFF
+    pinMode(pushButton_ON,  INPUT); // LED ON
     
     // setup serial port
     Serial.begin(19200);
+    Serial << "[ARRAYBOT LIGHTS VERSION="<<sketchVersion<<"]";        
     sendInfo();    
 }
 
@@ -62,20 +63,29 @@ void loop()
     {         
         processByte(Serial.read());
     }    
-   
-    if (digitalRead(pushButton_3) || btn3 == true)
+       
+    //We only care for when these goes from low -> high
+    if (digitalRead(pushButton_OFF) || btn3 == true)
     {
-        Serial << "[BUTTON_3_DOWN]";
-        frontLEDs->run(RELEASE);
-        btn3 = false; 
+        btn3 = false;         
+        if(LEDOn == true)
+        {            
+            frontLEDs->run(RELEASE);
+            LEDOn = false;                        
+            sendInfo();                            
+        }        
     }  
-
-    if (digitalRead(pushButton_4) || btn4 == true)
+    
+    if (digitalRead(pushButton_ON) || btn4 == true)
     {
-        Serial << "[BUTTON_4_DOWN]";
-        frontLEDs->run(FORWARD);        
-        btn4 = false;         
-    }    
+        btn4 = false;                
+        if(LEDOn == false)
+        {
+            frontLEDs->run(FORWARD);        
+            LEDOn = true;
+            sendInfo();                
+        }
+    }        
 }
   
 void processByte(char ch)
@@ -88,7 +98,7 @@ void processByte(char ch)
         case 'f':
             frontLEDDrive = Serial.parseInt();
             frontLEDs->setSpeed(frontLEDDrive);
-            Serial << "[FRONT_LED_DRIVE=" << frontLEDDrive<<"]";                        
+            sendInfo();            
         break;
         
         case 'i': //Return info about current HW state
@@ -96,18 +106,12 @@ void processByte(char ch)
         break;
         
         default: //Do nothing
-            Serial << "[UNHANDLED_CHAR_RECEIVED:'"<<ch<<"']";
-        ;
+            Serial << "[UNHANDLED_CHAR_RECEIVED:'"<<ch<<"']";        
     }    
 }
 
 void sendInfo()
 {
-    Serial << "[ARRAYBOT LIGHTS VERSION="<<sketchVersion<<"]";    
-    
-    //Read and report states of "light pins"                
-    Serial << "[" << ((digitalRead(4)) ? "PIN_4=HIGH," : "PIN_4=LOW") << "]";
-    Serial << "[" << ((digitalRead(5)) ? "PIN_5=HIGH," : "PIN_5=LOW") << "]";    
-    Serial << "[FRONT_LED_DRIVE="<<frontLEDDrive<<"]";    
+    Serial << "[AB_LIGHTS_DATA," << "LED_DRIVE="<<frontLEDDrive<<", LED_ON=" <<   (LEDOn ? "TRUE" : " FALSE") << "]";        
 }
   

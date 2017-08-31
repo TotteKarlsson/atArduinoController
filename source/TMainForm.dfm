@@ -1,6 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
+  ActiveControl = LEDDriveE
   Caption = 'Arduino Controller'
   ClientHeight = 697
   ClientWidth = 990
@@ -262,9 +263,9 @@ object MainForm: TMainForm
         Align = alLeft
         Caption = 'Lights'
         TabOrder = 0
-        object mFrontBackLEDBtn: TArrayBotButton
-          Left = 18
-          Top = 37
+        object LEDBtn: TArrayBotButton
+          Left = 19
+          Top = 125
           Width = 200
           Height = 80
           Caption = 'Flip LEDs ON'
@@ -272,6 +273,40 @@ object MainForm: TMainForm
           TabOrder = 0
           OnClick = LigthsBtnsClick
           SoundID = 'BUTTON_CLICK_4'
+        end
+        object RequestInfoBtn: TArrayBotButton
+          Left = 19
+          Top = 21
+          Width = 200
+          Height = 80
+          Caption = 'Request Info'
+          ParentDoubleBuffered = True
+          TabOrder = 1
+          OnClick = LigthsBtnsClick
+          SoundID = 'BUTTON_CLICK_4'
+        end
+        object LEDDriveE: TIntegerLabeledEdit
+          Left = 256
+          Top = 168
+          Width = 162
+          Height = 31
+          EditLabel.Width = 149
+          EditLabel.Height = 23
+          EditLabel.Caption = 'LED Drive (0-255)'
+          TabOrder = 2
+          Text = '0'
+          OnKeyDown = LEDDriveEKeyDown
+        end
+        object DriveTB: TTrackBar
+          Left = 252
+          Top = 216
+          Width = 166
+          Height = 45
+          Max = 255
+          ShowSelRange = False
+          TabOrder = 3
+          TickStyle = tsNone
+          OnChange = DriveTBChange
         end
       end
     end
@@ -437,5 +472,12 @@ object MainForm: TMainForm
     OnTimer = UIUpdateTimerTimer
     Left = 436
     Top = 304
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    UseAppManager = True
+    Left = 20
+    Top = 5
   end
 end

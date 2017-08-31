@@ -120,7 +120,6 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
     	atdbDM->SQLConnection1->AfterDisconnect = afterDBServerDisconnect;
 		TATDBConnectionFrame1->mATDBServerBtnConnectClick(NULL);
     }
-
 }
 
 //---------------------------------------------------------------------------
@@ -155,17 +154,36 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
             mf->mArduinoServer.broadcast(msg);
 
         	StringList l(msg, ',');
-			if(l.size() && l[0] == "DHT22_DATA")
+			if(l.size() == 4 && l[0] == "DHT22_DATA" && atdbSensorsDM)
             {
-                if(atdbSensorsDM)
+                //Post message to db populator
+                atdbSensorsDM->insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
+            }
+
+			if(l.size() == 3 && l[0] == "AB_LIGHTS_DATA")
+            {
+            	StringList v1(l[1],'=');
+                if(v1.size() == 2)
                 {
-					if(l.size() == 4)
+                	int val = toInt(v1[1]);
+                	mf->LEDDriveE->setValue(val);
+                }
+
+            	StringList v2(l[2],'=');
+
+                //Is LED On?
+                if(v2.size() == 2)
+                {
+                	if(compareNoCase(v2[1], "True"))
                     {
-                    	//Post message to db populator
-                        atdbSensorsDM->insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
+                    	mf->LEDBtn->Caption = "Flip LEDs OFF";
+                    }
+                    else
+                    {
+                    	mf->LEDBtn->Caption = "Flip LEDs ON";
                     }
                 }
-            }
+        	}
         }
     };
 
@@ -203,21 +221,25 @@ void __fastcall TMainForm::mArduinoServerStartBtnClick(TObject *Sender)
 void __fastcall TMainForm::LigthsBtnsClick(TObject *Sender)
 {
 	TArrayBotButton* b = dynamic_cast<TArrayBotButton*>(Sender);
-    if(b == mFrontBackLEDBtn )
+    if(b == LEDBtn )
     {
     	static string cap = "ON";
 	   	if(contains("OFF", cap))
         {
-        	mFrontBackLEDBtn->Caption = "Flip LEDs ON";
+        	LEDBtn->Caption = "Flip LEDs ON";
             cap = "ON";
         	mArduinoServer.request("TURN_ON_LED_LIGHTS");
         }
         else
         {
-        	mFrontBackLEDBtn->Caption = "Flip LEDs OFF";
+        	LEDBtn->Caption = "Flip LEDs OFF";
             cap = "OFF";
         	mArduinoServer.request("TURN_OFF_LED_LIGHTS");
         }
+    }
+    else if(b == RequestInfoBtn)
+    {
+    	mArduinoServer.request("GET_LIGHTS_ARDUINO_STATUS");
     }
 }
 
@@ -227,7 +249,6 @@ void __fastcall TMainForm::TATDBConnectionFrame1mATDBServerBtnConnectClick(TObje
 	TATDBConnectionFrame1->mATDBServerBtnConnectClick(Sender);
 }
 
-
 //---------------------------------------------------------------------------
 void __fastcall	TMainForm::afterDBServerConnect(System::TObject* Sender)
 {
@@ -235,16 +256,6 @@ void __fastcall	TMainForm::afterDBServerConnect(System::TObject* Sender)
 
 	atdbDM->afterConnect();
 	TATDBConnectionFrame1->afterConnect();
-
-//	//Setup UI
-//    mUsersCB->KeyValue = mDBUserID.getValue();
-//    mBlockProcessIDCB->KeyValue = mProcessID.getValue();
-//    BlockIDCB->KeyValue = mBlockID.getValue();
-//    enableDisableGroupBox(BlockSelectionGB, true);
-//    enableDisableGroupBox(BlocksGB, true);
-//    enableDisableGroupBox(RibbonsDataGB, true);
-//
-//    mRegisterRibbonBtn->Enabled = true;
 }
 
 //---------------------------------------------------------------------------
@@ -252,10 +263,26 @@ void __fastcall	TMainForm::afterDBServerDisconnect(System::TObject* Sender)
 {
 	Log(lInfo) << "Disconnected from the DB Server";
 	TATDBConnectionFrame1->afterDisconnect();
-
-//    enableDisableGroupBox(BlocksGB, false);
-//    enableDisableGroupBox(BlockSelectionGB, false);
-//    enableDisableGroupBox(RibbonsDataGB, false);
-//    mRegisterRibbonBtn->Enabled = false;
 }
+
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::DriveTBChange(TObject *Sender)
+{
+	static int pos(0);
+    if(DriveTB->Position != pos)
+    {
+        pos = DriveTB->Position;
+		mLightsArduino.setLEDDrive(pos);
+    }
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftState Shift)
+{
+	if(Key == VK_RETURN)
+    {
+		DriveTB->Position  = LEDDriveE->getValue();
+    }
+}
+
 
