@@ -118,7 +118,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 #pragma comment(lib, "mtkMath.lib")
 #pragma comment(lib, "mtkIPC.lib")
 
-#pragma comment(lib, "libmysqlB.lib")
+//#pragma comment(lib, "libmysqlB.lib")
 #pragma comment(lib, "atCore.lib")
 #pragma comment(lib, "atSerialAPI.lib")
 #pragma comment(lib, "atArduino.lib")

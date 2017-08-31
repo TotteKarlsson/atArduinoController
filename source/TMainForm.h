@@ -138,7 +138,7 @@ class TMainForm : public TRegistryForm
         ArduinoServer					    mArduinoServer;
 
            									//References to arduino objects
-//        LightsArduino&					    mLightsArduino;
+        LightsArduino&					    mLightsArduino;
        	SensorsArduino&					    mSensorsArduino;
 
         BEGIN_MESSAGE_MAP

@@ -42,7 +42,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
     mIniFile(joinPath(gAppDataFolder, "ArduinoController.ini"), true, true),
     mLogLevel(lAny),
     mArduinoServer(-1),
-//    mLightsArduino(mArduinoServer.getLightsArduino()),
+    mLightsArduino(mArduinoServer.getLightsArduino()),
     mSensorsArduino(mArduinoServer.getSensorsArduino()),
 	mBottomPanelVisible(true),
 	mBottomPanelHeight(100)
@@ -126,12 +126,12 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall	TMainForm::setupUIFrames()
 {
-//    mLightsArduino.setName("LIGHTS_ARDUINO");
-//    TLightsArduinoFrame* af2 = new TLightsArduinoFrame(mArduinoServer, mLightsArduino, mIniFile, this);
-//    af2->Parent =  mArduinoSB;
-//    af2->Align = alLeft;
-//    af2->ConnectBtnClick(NULL);
-//    mFrames.push_back(af2);
+    mLightsArduino.setName("LIGHTS_ARDUINO");
+    TLightsArduinoFrame* af1 = new TLightsArduinoFrame(mArduinoServer, mLightsArduino, mIniFile, this);
+    af1->Parent =  mArduinoSB;
+    af1->Align = alLeft;
+    af1->ConnectBtnClick(NULL);
+    mFrames.push_back(af1);
 
     mSensorsArduino.setName("SENSORS_ARDUINO");
     TSensorsArduinoFrame* af2 = new TSensorsArduinoFrame(mArduinoServer, mSensorsArduino, mIniFile, this);
@@ -162,7 +162,6 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
 					if(l.size() == 4)
                     {
                     	//Post message to db populator
-//	                    mf->mATDB.insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
                         atdbSensorsDM->insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
                     }
                 }
