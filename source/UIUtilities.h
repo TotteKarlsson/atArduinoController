@@ -1,7 +1,7 @@
 #ifndef UIUtilitiesH
 #define UIUtilitiesH
 #include "abUIDataStructures.h"
-#include "mtkSQLite.h"
+#include "database/mtkSQLite.h"
 #include "mtkStringList.h"
 
 using mtk::SQLite;

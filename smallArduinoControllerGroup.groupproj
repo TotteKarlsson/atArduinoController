@@ -3,7 +3,7 @@
         <ProjectGuid>{14DD28EE-43BF-42B3-B467-1F3602F37384}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="P:\libs\atapi\source\atCore.cbproj">
+        <Projects Include="P:\libs\atapi\source\core\atCore.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="P:\libs\atapi\source\vcl\atVCLCore.cbproj">
@@ -21,13 +21,13 @@
         </BorlandProject>
     </ProjectExtensions>
     <Target Name="atCore">
-        <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj"/>
+        <MSBuild Projects="P:\libs\atapi\source\core\atCore.cbproj"/>
     </Target>
     <Target Name="atCore:Clean">
-        <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj" Targets="Clean"/>
+        <MSBuild Projects="P:\libs\atapi\source\core\atCore.cbproj" Targets="Clean"/>
     </Target>
     <Target Name="atCore:Make">
-        <MSBuild Projects="P:\libs\atapi\source\atCore.cbproj" Targets="Make"/>
+        <MSBuild Projects="P:\libs\atapi\source\core\atCore.cbproj" Targets="Make"/>
     </Target>
     <Target Name="atVCLCore">
         <MSBuild Projects="P:\libs\atapi\source\vcl\atVCLCore.cbproj"/>

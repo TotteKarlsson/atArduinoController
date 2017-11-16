@@ -19,10 +19,10 @@ void __fastcall TMainForm::ShutDownTimerTimer(TObject *Sender)
 
     mArduinoServer.assignOnUpdateCallBack(NULL);
 
-    if(atdbDM->SQLConnection1->Connected)
+    if(pgDM && pgDM->SQLConnection1->Connected)
     {
-    	atdbDM->SQLConnection1->Connected = false;
-	    atdbDM->SQLConnection1->Close();
+    	pgDM->SQLConnection1->Connected = false;
+	    pgDM->SQLConnection1->Close();
     }
 
     //This will save any ini parameters in the frame
@@ -54,7 +54,7 @@ void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
     //Timer fire    if(
    	CanClose = (mFrames.size()
             	|| mArduinoServer.isRunning()
-		        || atdbDM->SQLConnection1->Connected
+		        || (pgDM && pgDM->SQLConnection1->Connected)
                 ) ? false : true;
 
 
@@ -68,5 +68,14 @@ void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
 void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	Log(lInfo) << "In FormClose";
+	TPGConnectionFrame1->writeParameters();
+
+
+    mBottomPanelVisible = BottomPanel->Visible ;
+    mBottomPanelHeight = BottomPanel->Height;
+
+	mProperties.write();
+    mIniFile.save();
+
 }
 

@@ -9,15 +9,15 @@
 #include "Core/atExceptions.h"
 #include "TArduinoControllerSplashForm.h"
 #include "mtkRestartApplicationUtils.h"
+#include "TPGDataModule.h"
+#include "TSensorsDataModule.h"
 //---------------------------------------------------------------------------
 USEFORM("TMainForm.cpp", MainForm);
-USEFORM("P:\libs\atapi\source\vcl\frames\TATDBConnectionFrame.cpp", ATDBConnectionFrame); /* TFrame: File Type */
-USEFORM("P:\libs\atapi\source\vcl\datamodules\TATDBSensorsDataModule.cpp", atdbSensorsDM); /* TDataModule: File Type */
-USEFORM("P:\libs\atapi\source\vcl\datamodules\TATDBDataModule.cpp", atdbDM); /* TDataModule: File Type */
 USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
 USEFORM("forms\TAboutArduinoControllerForm.cpp", AboutArduinoControllerForm);
 USEFORM("frames\TLightsArduinoFrame.cpp", LightsArduinoFrame); /* TFrame: File Type */
 USEFORM("frames\TArduinoBoardFrame.cpp", ArduinoBoardFrame); /* TFrame: File Type */
+USEFORM("P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.cpp", PGConnectionFrame); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 using namespace mtk;
 using namespace std;
@@ -62,6 +62,8 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
             Sleep(1000);
 		}
 
+        pgDM 	                = new TpgDM(NULL);
+        sensorsDM 	            = new TSensorsDataModule(NULL);
         //Look at this later... does not work yet
         const char appMutexName [] = "arduinoControllerAppMutex";
         appMutex = ::CreateMutexA(NULL, FALSE, appMutexName);
@@ -86,9 +88,8 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->MainFormOnTaskBar = true;
 		TStyleManager::TrySetStyle("Obsidian");
 		Application->Title = "arduino_controller";
-		Application->CreateForm(__classid(TatdbDM), &atdbDM);
 		Application->CreateForm(__classid(TMainForm), &MainForm);
-		Application->CreateForm(__classid(TatdbSensorsDM), &atdbSensorsDM);
+		Application->CreateForm(__classid(TPGConnectionFrame), &PGConnectionFrame);
 		Application->Run();
 	}
 	catch (Exception &exception)
@@ -118,8 +119,8 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 #pragma comment(lib, "mtkMath.lib")
 #pragma comment(lib, "mtkIPC.lib")
 
-//#pragma comment(lib, "libmysqlB.lib")
 #pragma comment(lib, "atCore.lib")
+#pragma comment(lib, "atDataBase.lib")
 #pragma comment(lib, "atSerialAPI.lib")
 #pragma comment(lib, "atArduino.lib")
 

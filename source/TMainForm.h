@@ -31,14 +31,13 @@
 #include "TPropertyCheckBox.h"
 #include "TArrayBotBtn.h"
 #include "arduino/atLightsArduino.h"
-#include "TATDBConnectionFrame.h"
-#include "TATDBSensorsDataModule.h"
 #include <Data.Bind.Components.hpp>
 #include <Data.Bind.EngExt.hpp>
 #include <System.Bindings.Outputs.hpp>
 #include <System.Rtti.hpp>
 #include <Vcl.Bind.DBEngExt.hpp>
 #include <Vcl.Bind.Editors.hpp>
+#include "TPGConnectionFrame.h"
 
 using Poco::Timestamp;
 using mtk::IniFileProperties;
@@ -95,13 +94,13 @@ class TMainForm : public TRegistryForm
 	TPanel *Panel1;
 	TButton *mShowBottomPanelBtn;
 	TTabSheet *TabSheet3;
-	TATDBConnectionFrame *TATDBConnectionFrame1;
 	TIntLabel *NrOfServerClients;
 	TLabel *Label1;
 	TArrayBotButton *RequestInfoBtn;
 	TIntegerLabeledEdit *LEDDriveE;
 	TTrackBar *DriveTB;
 	TBindingsList *BindingsList1;
+	TPGConnectionFrame *TPGConnectionFrame1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
     void __fastcall FormCreate(TObject *Sender);
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
@@ -116,11 +115,8 @@ class TMainForm : public TRegistryForm
 	void __fastcall mArduinoServerStartBtnClick(TObject *Sender);
 	void __fastcall LigthsBtnsClick(TObject *Sender);
 	void __fastcall mShowBottomPanelBtnClick(TObject *Sender);
-	void __fastcall TATDBConnectionFrame1mATDBServerBtnConnectClick(TObject *Sender);
 	void __fastcall DriveTBChange(TObject *Sender);
 	void __fastcall LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
-
-          
 
     private:
         LogFileReader                       mLogFileReader;

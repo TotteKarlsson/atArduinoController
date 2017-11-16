@@ -52,7 +52,7 @@
         <ProjectType>CppVCLApplication</ProjectType>
         <Multithreaded>true</Multithreaded>
         <IncludePath>p:\libs\atapi\source\vcl\datamodules\;P:\libs\atapi\source\vcl\frames\;p:\libs\atapi\source\database\;frames\;forms\;forms;frames;p:\libs\atapi\source\vcl\datamodules;$(IncludePath)</IncludePath>
-        <AllPackageLibs>rtl.lib;vcl.lib;VCLCommon.lib;vclactnband.lib;vclx.lib;DuneComponents.lib;vclimg.lib;adortl.lib;dbrtl.lib;ArrayBotPackage.lib;atVCLCore.lib;dsnap.lib;dbexpress.lib;DbxCommonDriver.lib;dbxcds.lib;DBXMySQLDriver.lib;DuneForms.lib;ArrayCamPackage.lib;bindcomp.lib;bindengine.lib;bindcompvcl.lib;DbxDevartSQLiteDriver170.lib;Tee.lib</AllPackageLibs>
+        <AllPackageLibs>rtl.lib;vcl.lib;VCLCommon.lib;vclactnband.lib;vclx.lib;DuneComponents.lib;vclimg.lib;adortl.lib;dbrtl.lib;atVCLCore.lib;dsnap.lib;dbexpress.lib;DbxCommonDriver.lib;dbxcds.lib;DBXMySQLDriver.lib;DuneForms.lib;ArrayCamPackage.lib;bindcomp.lib;bindengine.lib;bindcompvcl.lib;Tee.lib;DbxDevartPostgreSQLDriver170.lib</AllPackageLibs>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <UsePackages>true</UsePackages>
@@ -106,11 +106,9 @@ xcopy $(OUTPUTDIR)$(OUTPUTFILENAME) $(APP_RELEASES)\atArduinoController /y
 xcopy $(OUTPUTDIR)*.dll $(APP_RELEASES)\atArduinoController /y
 xcopy p:\redist\atArduinoController\*.dll $(APP_RELEASES)\atArduinoController /y
 xcopy p:\redist\atArduinoController\*.bpl $(APP_RELEASES)\atArduinoController /y
-xcopy p:\build\xe3_ide\bpl\atVCLCore.bpl $(APP_RELEASES)\atArduinoController /y
-xcopy p:\build\xe3_ide\bpl\Dune*.bpl $(APP_RELEASES)\atArduinoController /y
-xcopy p:\build\xe3_ide\bpl\VCLCommon*.bpl $(APP_RELEASES)\atArduinoController /y
+xcopy p:\build\debug\bpl\*.bpl $(APP_RELEASES)\atArduinoController /y
 $(PostBuildEvent)]]></PostBuildEvent>
-        <LinkPackageStatics>VCLCommon.lib;DuneComponents.lib;ArrayBotPackage.lib;atVCLCore.lib;DuneForms.lib;ArrayCamPackage.lib;DbxDevartSQLiteDriver170.lib</LinkPackageStatics>
+        <LinkPackageStatics>VCLCommon.lib;DuneComponents.lib;atVCLCore.lib;DuneForms.lib;ArrayCamPackage.lib;DbxDevartPostgreSQLDriver170.lib</LinkPackageStatics>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <Defines>POCO_STATIC;$(Defines)</Defines>
         <Debugger_DebugSourcePath>P:\libs\dsl\Common\;P:\ArrayBot\source\;P:\libs\dsl\Common\;P:\libs\dsl\VCL\Components\;P:\libs\dsl\ThirdParty\Poco\Foundation\src\;P:\libs\dsl\VCL\Forms\;P:\libs\dsl\VCL\Common\;P:\libs\dsl\Common\Math\;P:\libs\dsl\Common\IPC\;P:\libs\atapi\source\resources\;P:\libs\atapi\source\barcodereader\;P:\libs\atapi\thirdparty\ssidll\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
@@ -172,31 +170,16 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="UIUtilities.cpp">
             <BuildOrder>11</BuildOrder>
         </CppCompile>
-        <CppCompile Include="P:\libs\atapi\source\vcl\datamodules\TATDBDataModule.cpp">
-            <Form>atdbDM</Form>
-            <DesignClass>TDataModule</DesignClass>
-            <DependentOn>P:\libs\atapi\source\vcl\datamodules\TATDBDataModule.h</DependentOn>
-            <BuildOrder>10</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="P:\libs\atapi\source\vcl\datamodules\TATDBSensorsDataModule.cpp">
-            <Form>atdbSensorsDM</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-            <DependentOn>P:\libs\atapi\source\vcl\datamodules\TATDBSensorsDataModule.h</DependentOn>
-            <BuildOrder>12</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="P:\libs\atapi\source\vcl\frames\TATDBConnectionFrame.cpp">
-            <Form>ATDBConnectionFrame</Form>
+        <CppCompile Include="P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.cpp">
+            <Form>PGConnectionFrame</Form>
             <DesignClass>TFrame</DesignClass>
-            <DependentOn>P:\libs\atapi\source\vcl\frames\TATDBConnectionFrame.h</DependentOn>
-            <BuildOrder>11</BuildOrder>
+            <DependentOn>P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
         </CppCompile>
         <FormResources Include="TMainForm.dfm"/>
-        <FormResources Include="P:\libs\atapi\source\vcl\frames\TATDBConnectionFrame.dfm"/>
-        <FormResources Include="P:\libs\atapi\source\vcl\datamodules\TATDBSensorsDataModule.dfm"/>
-        <FormResources Include="P:\libs\atapi\source\vcl\datamodules\TATDBDataModule.dfm"/>
-        <FormResources Include="frames\TAboutArduinoServerFrame.dfm"/>
+        <FormResources Include="P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.dfm"/>
         <FormResources Include="forms\TAboutArduinoControllerForm.dfm"/>
+        <FormResources Include="frames\TAboutArduinoServerFrame.dfm"/>
         <FormResources Include="frames\TLightsArduinoFrame.dfm"/>
         <FormResources Include="frames\TArduinoBoardFrame.dfm"/>
         <BuildConfiguration Include="Release">
@@ -278,7 +261,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>xcopy ..\*.txt $(APP_RELEASES)\atArduinoController /y &amp;&amp;xcopy $(OUTPUTDIR)$(OUTPUTFILENAME) $(APP_RELEASES)\atArduinoController /y &amp;&amp;xcopy $(OUTPUTDIR)*.dll $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\redist\atArduinoController\*.dll $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\redist\atArduinoController\*.bpl $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\build\xe3_ide\bpl\atVCLCore.bpl $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\build\xe3_ide\bpl\Dune*.bpl $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\build\xe3_ide\bpl\VCLCommon*.bpl $(APP_RELEASES)\atArduinoController /y</PostBuildEvent>
+        <PostBuildEvent>xcopy ..\*.txt $(APP_RELEASES)\atArduinoController /y &amp;&amp;xcopy $(OUTPUTDIR)$(OUTPUTFILENAME) $(APP_RELEASES)\atArduinoController /y &amp;&amp;xcopy $(OUTPUTDIR)*.dll $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\redist\atArduinoController\*.dll $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\redist\atArduinoController\*.bpl $(APP_RELEASES)\atArduinoController /y&amp;&amp;xcopy p:\build\debug\bpl\*.bpl $(APP_RELEASES)\atArduinoController /y</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>

@@ -11,7 +11,8 @@
 #include "Core/atExceptions.h"
 #include "TLightsArduinoFrame.h"
 #include "TSensorsArduinoFrame.h"
-#include "TATDBDataModule.h"
+#include "TSensorsDataModule.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TIntegerLabeledEdit"
@@ -21,7 +22,7 @@
 #pragma link "TIntLabel"
 #pragma link "TPropertyCheckBox"
 #pragma link "TArrayBotBtn"
-#pragma link "TATDBConnectionFrame"
+#pragma link "TPGConnectionFrame"
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
 TMainForm *MainForm;
@@ -58,18 +59,8 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	mProperties.add((BaseProperty*)  &mBottomPanelHeight.setup(						"BOTTOM_PANEL_HEIGHT",   100));
 	mProperties.add((BaseProperty*)  &mBottomPanelVisible.setup(  					"BOTTOM_PANEL_VIBILITY", true));
 
-	TATDBConnectionFrame* f = TATDBConnectionFrame1;
-	mProperties.add((BaseProperty*)  &f->mServerIPE->getProperty()->setup( 	    	"MYSQL_SERVER_IP",              	"127.0.0.1"));
-	mProperties.add((BaseProperty*)  &f->mDBUserE->getProperty()->setup( 	   		"ATDB_USER_NAME",                   "none"));
-	mProperties.add((BaseProperty*)  &f->mPasswordE->getProperty()->setup( 	    	"ATDB_USER_PASSWORD",               "none"));
-	mProperties.add((BaseProperty*)  &f->mDatabaseE->getProperty()->setup( 	    	"ATDB_DB_NAME",    			        "none"));
-
     mProperties.read();
 	mArduinoServerPortE->update();
-    f->mDBUserE->update();
-    f->mPasswordE->update();
-    f->mDatabaseE->update();
-	f->mServerIPE->update();
 
     BottomPanel->Visible 	= mBottomPanelVisible;
     BottomPanel->Height 	= mBottomPanelHeight;
@@ -84,13 +75,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 }
 
 __fastcall TMainForm::~TMainForm()
-{
-    mBottomPanelVisible = BottomPanel->Visible ;
-    mBottomPanelHeight = BottomPanel->Height;
-
-	mProperties.write();
-    mIniFile.save();
-}
+{}
 
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::FormCreate(TObject *Sender)
@@ -114,11 +99,13 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 	//Setup frames for the Arduinos
 	setupUIFrames();
 
-    if(atdbDM)
+
+    if(pgDM)
     {
-	    atdbDM->SQLConnection1->AfterConnect 	= afterDBServerConnect;
-    	atdbDM->SQLConnection1->AfterDisconnect = afterDBServerDisconnect;
-		TATDBConnectionFrame1->mATDBServerBtnConnectClick(NULL);
+	    pgDM->SQLConnection1->AfterConnect 	= afterDBServerConnect;
+    	pgDM->SQLConnection1->AfterDisconnect = afterDBServerDisconnect;
+   		TPGConnectionFrame1->init(&mIniFile, "POSTGRESDB_CONNECTION");
+	    TPGConnectionFrame1->ConnectA->Execute();
     }
 }
 
@@ -154,10 +141,10 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
             mf->mArduinoServer.broadcast(msg);
 
         	StringList l(msg, ',');
-			if(l.size() == 4 && l[0] == "DHT22_DATA" && atdbSensorsDM)
+			if(l.size() == 4 && l[0] == "DHT22_DATA" && sensorsDM)
             {
                 //Post message to db populator
-                atdbSensorsDM->insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
+                sensorsDM->insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
             }
 
 			if(l.size() == 3 && l[0] == "AB_LIGHTS_DATA")
@@ -246,25 +233,19 @@ void __fastcall TMainForm::LigthsBtnsClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TMainForm::TATDBConnectionFrame1mATDBServerBtnConnectClick(TObject *Sender)
-{
-	TATDBConnectionFrame1->mATDBServerBtnConnectClick(Sender);
-}
-
-//---------------------------------------------------------------------------
 void __fastcall	TMainForm::afterDBServerConnect(System::TObject* Sender)
 {
 	Log(lInfo) << "Succesfully connected to DB Server";
 
-	atdbDM->afterConnect();
-	TATDBConnectionFrame1->afterConnect();
+	pgDM->afterConnect();
+	TPGConnectionFrame1->afterConnect();
 }
 
 //---------------------------------------------------------------------------
 void __fastcall	TMainForm::afterDBServerDisconnect(System::TObject* Sender)
 {
 	Log(lInfo) << "Disconnected from the DB Server";
-	TATDBConnectionFrame1->afterDisconnect();
+	TPGConnectionFrame1->afterDisconnect();
 }
 
 //---------------------------------------------------------------------------
@@ -293,5 +274,6 @@ void __fastcall TMainForm::LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftSt
 		DriveTB->Position  = LEDDriveE->getValue();
     }
 }
+
 
 

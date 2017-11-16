@@ -2,7 +2,7 @@
 double sketchVersion = 1.0;
 void processByte(char ch); 
 
-int gNROfMessages = 4;
+int gNROfMessages = 6;
 const char* gMessages[] = 
 {
 //"þ5CA4",
@@ -14,8 +14,8 @@ const char* gMessages[] =
 //"!1440FF037B002F",
 //"!1440FF037AC070",
 //"!1423010000C8",
-//"!153001006456",
-//"!1531010BB8F6",
+"!153001006456",
+"!1531010BB8F6",
 //"!15200101C9",
 //"!1540FF02AA",
 //"!1420FF0033A4F6",
@@ -60,7 +60,7 @@ int gMessageIndex = 0;
 //Allow nice syntax for serial printing
 template<class T> inline Print &operator <<(Print &o, T arg) { o.print(arg); return o; }
 
-unsigned long   gSimulationSpeed        = 3000;
+unsigned long   gSimulationSpeed        = 1000;
 bool            gHasMessage            = false;
 String          gMessage;
 unsigned long   gLastReadTime = millis();

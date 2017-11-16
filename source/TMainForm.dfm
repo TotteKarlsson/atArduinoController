@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  ActiveControl = LEDDriveE
+  ActiveControl = LEDBtn
   Caption = 'Arduino Controller'
   ClientHeight = 697
   ClientWidth = 990
@@ -313,6 +313,10 @@ object MainForm: TMainForm
     object TabSheet2: TTabSheet
       Caption = 'Board Settings'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mArduinoSB: TScrollBox
         Left = 0
         Top = 0
@@ -325,82 +329,82 @@ object MainForm: TMainForm
     object TabSheet3: TTabSheet
       Caption = 'ATDB'
       ImageIndex = 2
-      inline TATDBConnectionFrame1: TATDBConnectionFrame
+      inline TPGConnectionFrame1: TPGConnectionFrame
         Left = 0
         Top = 0
-        Width = 313
+        Width = 513
         Height = 358
         Align = alLeft
-        AutoSize = True
         TabOrder = 0
-        ExplicitWidth = 313
+        ExplicitWidth = 513
         ExplicitHeight = 358
         inherited GBox1: TGroupBox
-          Width = 313
+          Width = 513
           Height = 358
           Align = alClient
-          ExplicitWidth = 313
-          ExplicitHeight = 358
+          ExplicitWidth = 513
+          ExplicitHeight = 297
           inherited mServerIPE: TSTDStringLabeledEdit
-            Top = 57
+            Top = 56
             Height = 31
-            EditLabel.Width = 77
+            EditLabel.Width = 126
             EditLabel.Height = 23
             EditLabel.ExplicitLeft = 16
-            EditLabel.ExplicitTop = 31
-            EditLabel.ExplicitWidth = 77
+            EditLabel.ExplicitTop = 30
+            EditLabel.ExplicitWidth = 126
             EditLabel.ExplicitHeight = 23
-            ExplicitTop = 57
+            ExplicitTop = 56
             ExplicitHeight = 31
           end
           inherited mDBUserE: TSTDStringLabeledEdit
-            Top = 120
+            Top = 121
             Height = 31
             EditLabel.Width = 37
             EditLabel.Height = 23
             EditLabel.ExplicitLeft = 16
-            EditLabel.ExplicitTop = 94
+            EditLabel.ExplicitTop = 95
             EditLabel.ExplicitWidth = 37
             EditLabel.ExplicitHeight = 23
-            ExplicitTop = 120
+            ExplicitTop = 121
             ExplicitHeight = 31
           end
           inherited mPasswordE: TSTDStringLabeledEdit
-            Left = 175
-            Top = 120
+            Left = 181
+            Top = 121
             Height = 31
             EditLabel.Width = 78
             EditLabel.Height = 23
-            EditLabel.ExplicitLeft = 175
-            EditLabel.ExplicitTop = 94
+            EditLabel.ExplicitLeft = 181
+            EditLabel.ExplicitTop = 95
             EditLabel.ExplicitWidth = 78
             EditLabel.ExplicitHeight = 23
-            ExplicitLeft = 175
-            ExplicitTop = 120
+            ExplicitLeft = 181
+            ExplicitTop = 121
             ExplicitHeight = 31
-          end
-          inherited mATDBServerBtnConnect: TArrayBotButton
-            Left = 16
-            Top = 241
-            Width = 234
-            OnClick = TATDBConnectionFrame1mATDBServerBtnConnectClick
-            ExplicitLeft = 16
-            ExplicitTop = 241
-            ExplicitWidth = 234
           end
           inherited mDatabaseE: TSTDStringLabeledEdit
-            Left = 175
-            Top = 52
+            Left = 181
+            Top = 56
             Height = 31
             EditLabel.Width = 78
             EditLabel.Height = 23
-            EditLabel.ExplicitLeft = 175
-            EditLabel.ExplicitTop = 26
+            EditLabel.ExplicitLeft = 181
+            EditLabel.ExplicitTop = 30
             EditLabel.ExplicitWidth = 78
             EditLabel.ExplicitHeight = 23
-            ExplicitLeft = 175
-            ExplicitTop = 52
+            ExplicitLeft = 181
+            ExplicitTop = 56
             ExplicitHeight = 31
+          end
+          inherited ArrayBotButton1: TArrayBotButton
+            Left = 16
+            Top = 184
+            Width = 145
+            Height = 65
+            ExplicitLeft = 16
+            ExplicitTop = 184
+            ExplicitWidth = 145
+            ExplicitHeight = 65
           end
         end
       end
