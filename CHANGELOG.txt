@@ -1,3 +1,10 @@
+Release 0.5.2 (Nov 16)
+=======================
+* Switched to use PostGres database instead of MySQL
+* Fixed so that the lights Trackbar can be updated from the arduino, and vice versa
+* Re enabled Lights code
+* Reviving control of Arraybot LED
+
 Release 0.5.1 (Aug 3)
 =======================
 * Fixed some shutdown thread issues

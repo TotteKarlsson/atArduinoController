@@ -61,6 +61,7 @@ int gMessageIndex = 0;
 template<class T> inline Print &operator <<(Print &o, T arg) { o.print(arg); return o; }
 
 unsigned long   gSimulationSpeed        = 1000;
+//unsigned long   gSimulationSpeed        = 60;
 bool            gHasMessage            = false;
 String          gMessage;
 unsigned long   gLastReadTime = millis();
