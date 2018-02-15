@@ -13,11 +13,12 @@
 #include "TSensorsDataModule.h"
 //---------------------------------------------------------------------------
 USEFORM("TMainForm.cpp", MainForm);
-USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
+USEFORM("P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.cpp", PGConnectionFrame); /* TFrame: File Type */
 USEFORM("forms\TAboutArduinoControllerForm.cpp", AboutArduinoControllerForm);
+USEFORM("frames\TAboutArduinoServerFrame.cpp", AboutArduinoServerFrame); /* TFrame: File Type */
 USEFORM("frames\TLightsArduinoFrame.cpp", LightsArduinoFrame); /* TFrame: File Type */
 USEFORM("frames\TArduinoBoardFrame.cpp", ArduinoBoardFrame); /* TFrame: File Type */
-USEFORM("P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.cpp", PGConnectionFrame); /* TFrame: File Type */
+USEFORM("frames\TWatchDogServerFrame.cpp", WatchDogServerFrame); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 using namespace mtk;
 using namespace std;

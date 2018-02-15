@@ -38,10 +38,14 @@
 #include <Vcl.Bind.DBEngExt.hpp>
 #include <Vcl.Bind.Editors.hpp>
 #include "TPGConnectionFrame.h"
-
+#include "EnvironmentalSensorReadThread.h"
+#include "SNMPWalkThread.h"
+#include "WatchDogServer.h"
+#include "TWatchDogServerFrame.h"
 using Poco::Timestamp;
 using mtk::IniFileProperties;
 using mtk::IniFile;
+using mtk::Property;
 
 class TABProcessSequencerFrame;
 class TRibbonLifterFrame;
@@ -101,6 +105,9 @@ class TMainForm : public TRegistryForm
 	TTrackBar *DriveTB;
 	TBindingsList *BindingsList1;
 	TPGConnectionFrame *TPGConnectionFrame1;
+	TButton *Button2;
+	TTimer *GetEnvironmentNumbersTimer;
+	TWatchDogServerFrame *TWatchDogServerFrame1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
     void __fastcall FormCreate(TObject *Sender);
     void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
@@ -117,6 +124,9 @@ class TMainForm : public TRegistryForm
 	void __fastcall mShowBottomPanelBtnClick(TObject *Sender);
 	void __fastcall DriveTBChange(TObject *Sender);
 	void __fastcall LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
+	void __fastcall Button2Click(TObject *Sender);
+	void __fastcall TWatchDogServerFrame1ArrayBotButton1Click(TObject *Sender);
+
 
     private:
         LogFileReader                       mLogFileReader;
@@ -127,9 +137,11 @@ class TMainForm : public TRegistryForm
 
         IniFile						        mIniFile;
         IniFileProperties  			        mProperties;
-		mtk::Property<mtk::LogLevel>        mLogLevel;
-		mtk::Property<int>        			mBottomPanelHeight;
-		mtk::Property<bool>        			mBottomPanelVisible;
+		Property<mtk::LogLevel>        		mLogLevel;
+		Property<int>        				mBottomPanelHeight;
+		Property<bool>        				mBottomPanelVisible;
+        Property<string>					mWatchDogServerIP;
+
 
 		void __fastcall		                OnException();
 
@@ -137,6 +149,16 @@ class TMainForm : public TRegistryForm
 	  	void								onUpdatesFromArduinoServer(const string& msg);
 		void __fastcall						afterDBServerConnect(System::TObject* Sender);
 		void __fastcall						afterDBServerDisconnect(System::TObject* Sender);
+
+	    EnvironmentalSensorReadThread		mReadSensorsThread;
+	    SNMPWalkThread						mSNMPWalkThread;
+        void __fastcall						onSensorReadStart(int, int);
+        void __fastcall						onSensorReadProgress(int, int);
+        void __fastcall						onSensorReadExit(int, int);
+
+        WatchDogServer						mWatchDogServer;
+        string								mEnvSensorDataString;
+		void __fastcall						consumeEnvironmentSensorData();
 
 	public:
 		__fastcall 					        TMainForm(TComponent* Owner);
@@ -147,7 +169,6 @@ class TMainForm : public TRegistryForm
 
            									//References to arduino objects
         LightsArduino&					    mLightsArduino;
-       	SensorsArduino&					    mSensorsArduino;
 
         BEGIN_MESSAGE_MAP
             MESSAGE_HANDLER(UWM_MESSAGE,    mlxStructMessage,         AppInBox);

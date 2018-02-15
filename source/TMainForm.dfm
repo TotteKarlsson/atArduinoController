@@ -3,8 +3,8 @@ object MainForm: TMainForm
   Top = 0
   ActiveControl = LEDBtn
   Caption = 'Arduino Controller'
-  ClientHeight = 697
-  ClientWidth = 990
+  ClientHeight = 947
+  ClientWidth = 1488
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -23,23 +23,24 @@ object MainForm: TMainForm
   TextHeight = 23
   object Splitter1: TSplitter
     Left = 0
-    Top = 485
-    Width = 990
+    Top = 735
+    Width = 1488
     Height = 3
     Cursor = crVSplit
     Align = alBottom
     ExplicitLeft = 32
     ExplicitTop = 657
+    ExplicitWidth = 990
   end
   object TopPanel: TPanel
     Left = 0
     Top = 0
-    Width = 990
+    Width = 1488
     Height = 89
     Align = alTop
     TabOrder = 0
     object Button1: TArrayBotButton
-      Left = 822
+      Left = 1320
       Top = 1
       Width = 88
       Height = 87
@@ -51,7 +52,7 @@ object MainForm: TMainForm
       SoundID = 'BUTTON_CLICK_4'
     end
     object Button5: TArrayBotButton
-      Left = 910
+      Left = 1408
       Top = 1
       Width = 79
       Height = 87
@@ -116,8 +117,8 @@ object MainForm: TMainForm
   end
   object mShowBottomPanelBtn: TButton
     Left = 0
-    Top = 678
-    Width = 990
+    Top = 928
+    Width = 1488
     Height = 19
     Align = alBottom
     Caption = '^'
@@ -127,15 +128,15 @@ object MainForm: TMainForm
   end
   object BottomPanel: TPanel
     Left = 0
-    Top = 488
-    Width = 990
+    Top = 738
+    Width = 1488
     Height = 190
     Align = alBottom
     TabOrder = 2
     object Panel2: TPanel
       Left = 1
       Top = 1
-      Width = 988
+      Width = 1486
       Height = 188
       Align = alClient
       Caption = 'Panel2'
@@ -143,7 +144,7 @@ object MainForm: TMainForm
       object infoMemo: TMemo
         Left = 1
         Top = 34
-        Width = 986
+        Width = 1484
         Height = 153
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
@@ -160,14 +161,14 @@ object MainForm: TMainForm
       object Panel1: TPanel
         Left = 1
         Top = 1
-        Width = 986
+        Width = 1484
         Height = 33
         Align = alTop
         TabOrder = 1
         object ToolBar1: TToolBar
           Left = 1
           Top = 1
-          Width = 949
+          Width = 1447
           Height = 31
           Align = alClient
           ButtonHeight = 30
@@ -213,7 +214,7 @@ object MainForm: TMainForm
           end
         end
         object ToolBar2: TToolBar
-          Left = 950
+          Left = 1448
           Top = 1
           Width = 35
           Height = 31
@@ -248,8 +249,8 @@ object MainForm: TMainForm
   object PageControl1: TPageControl
     Left = 0
     Top = 89
-    Width = 990
-    Height = 396
+    Width = 1488
+    Height = 646
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 3
@@ -259,13 +260,13 @@ object MainForm: TMainForm
         Left = 0
         Top = 0
         Width = 463
-        Height = 358
+        Height = 608
         Align = alLeft
         Caption = 'Lights'
         TabOrder = 0
         object LEDBtn: TArrayBotButton
           Left = 19
-          Top = 125
+          Top = 144
           Width = 200
           Height = 80
           Caption = 'Flip LEDs ON'
@@ -276,7 +277,7 @@ object MainForm: TMainForm
         end
         object RequestInfoBtn: TArrayBotButton
           Left = 19
-          Top = 21
+          Top = 38
           Width = 200
           Height = 80
           Caption = 'Request Info'
@@ -309,19 +310,80 @@ object MainForm: TMainForm
           OnChange = DriveTBChange
         end
       end
+      object Button2: TButton
+        Left = 1184
+        Top = 293
+        Width = 185
+        Height = 97
+        Caption = 'Query Sensors'
+        TabOrder = 1
+        OnClick = Button2Click
+      end
+      inline TWatchDogServerFrame1: TWatchDogServerFrame
+        Left = 463
+        Top = 0
+        Width = 481
+        Height = 608
+        Align = alLeft
+        TabOrder = 2
+        ExplicitLeft = 752
+        ExplicitTop = 48
+        ExplicitWidth = 481
+        ExplicitHeight = 425
+        inherited GroupBox1: TGroupBox
+          Width = 481
+          Height = 608
+          ExplicitLeft = 6
+          ExplicitTop = 2
+          ExplicitWidth = 481
+          ExplicitHeight = 608
+          inherited STDStringLabeledEdit1: TSTDStringLabeledEdit
+            Height = 31
+            EditLabel.Width = 77
+            EditLabel.Height = 23
+            EditLabel.ExplicitTop = 38
+            EditLabel.ExplicitWidth = 77
+            EditLabel.ExplicitHeight = 23
+            ExplicitHeight = 31
+          end
+          inherited GroupBox2: TGroupBox
+            inherited mMIBRoot: TSTDStringLabeledEdit
+              Height = 31
+              EditLabel.Width = 77
+              EditLabel.Height = 23
+              EditLabel.ExplicitTop = 22
+              EditLabel.ExplicitWidth = 77
+              EditLabel.ExplicitHeight = 23
+              ExplicitHeight = 31
+            end
+            inherited STDStringLabeledEdit3: TSTDStringLabeledEdit
+              Top = 128
+              Height = 31
+              EditLabel.Width = 112
+              EditLabel.Height = 23
+              EditLabel.ExplicitTop = 102
+              EditLabel.ExplicitWidth = 112
+              EditLabel.ExplicitHeight = 23
+              ExplicitTop = 128
+              ExplicitHeight = 31
+            end
+          end
+          inherited ArrayBotButton1: TArrayBotButton
+            Height = 33
+            OnClick = TWatchDogServerFrame1ArrayBotButton1Click
+            ExplicitHeight = 33
+          end
+        end
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'Board Settings'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mArduinoSB: TScrollBox
         Left = 0
         Top = 0
-        Width = 982
-        Height = 358
+        Width = 1480
+        Height = 608
         Align = alClient
         TabOrder = 0
       end
@@ -333,17 +395,17 @@ object MainForm: TMainForm
         Left = 0
         Top = 0
         Width = 513
-        Height = 358
+        Height = 608
         Align = alLeft
         TabOrder = 0
         ExplicitWidth = 513
-        ExplicitHeight = 358
+        ExplicitHeight = 608
         inherited GBox1: TGroupBox
           Width = 513
-          Height = 358
+          Height = 608
           Align = alClient
           ExplicitWidth = 513
-          ExplicitHeight = 297
+          ExplicitHeight = 608
           inherited mServerIPE: TSTDStringLabeledEdit
             Top = 56
             Height = 31
@@ -483,5 +545,9 @@ object MainForm: TMainForm
     UseAppManager = True
     Left = 20
     Top = 5
+  end
+  object GetEnvironmentNumbersTimer: TTimer
+    Left = 536
+    Top = 496
   end
 end

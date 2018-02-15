@@ -52,7 +52,7 @@
         <ProjectType>CppVCLApplication</ProjectType>
         <Multithreaded>true</Multithreaded>
         <IncludePath>p:\libs\atapi\source\vcl\datamodules\;P:\libs\atapi\source\vcl\frames\;p:\libs\atapi\source\database\;frames\;forms\;forms;frames;p:\libs\atapi\source\vcl\datamodules;$(IncludePath)</IncludePath>
-        <AllPackageLibs>rtl.lib;vcl.lib;VCLCommon.lib;vclactnband.lib;vclx.lib;DuneComponents.lib;vclimg.lib;adortl.lib;dbrtl.lib;atVCLCore.lib;dsnap.lib;dbexpress.lib;DbxCommonDriver.lib;dbxcds.lib;DBXMySQLDriver.lib;DuneForms.lib;ArrayCamPackage.lib;bindcomp.lib;bindengine.lib;bindcompvcl.lib;Tee.lib;DbxDevartPostgreSQLDriver170.lib</AllPackageLibs>
+        <AllPackageLibs>rtl.lib;vcl.lib;VCLCommon.lib;vclactnband.lib;vclx.lib;DuneComponents.lib;vclimg.lib;adortl.lib;dbrtl.lib;atVCLCore.lib;dsnap.lib;dbexpress.lib;DbxCommonDriver.lib;dbxcds.lib;DBXMySQLDriver.lib;DuneForms.lib;ArrayCamPackage.lib;bindcomp.lib;bindengine.lib;bindcompvcl.lib;Tee.lib;DbxDevartPostgreSQLDriver170.lib;IndySystem.lib;IndyProtocols.lib;IndyCore.lib</AllPackageLibs>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <UsePackages>true</UsePackages>
@@ -113,7 +113,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <Defines>POCO_STATIC;$(Defines)</Defines>
         <Debugger_DebugSourcePath>P:\libs\dsl\Common\;P:\ArrayBot\source\;P:\libs\dsl\Common\;P:\libs\dsl\VCL\Components\;P:\libs\dsl\ThirdParty\Poco\Foundation\src\;P:\libs\dsl\VCL\Forms\;P:\libs\dsl\VCL\Common\;P:\libs\dsl\Common\Math\;P:\libs\dsl\Common\IPC\;P:\libs\atapi\source\resources\;P:\libs\atapi\source\barcodereader\;P:\libs\atapi\thirdparty\ssidll\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
         <FinalOutputDir>$(DEBUG_BUILD)\bin</FinalOutputDir>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;vclactnband.bpi;vclx.bpi;vclimg.bpi;adortl.bpi;dbrtl.bpi;dsnap.bpi;dbexpress.bpi;DbxCommonDriver.bpi;dbxcds.bpi;DBXMySQLDriver.bpi;bindcomp.bpi;bindengine.bpi;bindcompvcl.bpi;Tee.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;vclactnband.bpi;vclx.bpi;vclimg.bpi;adortl.bpi;dbrtl.bpi;dsnap.bpi;dbexpress.bpi;DbxCommonDriver.bpi;dbxcds.bpi;DBXMySQLDriver.bpi;bindcomp.bpi;bindengine.bpi;bindcompvcl.bpi;Tee.bpi;IndySystem.bpi;IndyProtocols.bpi;IndyCore.bpi</LinkPackageImports>
         <IncludePath>$(DSL_ROOT)\Common;$(DEBUG_BUILD)\include;$(DSL_ROOT)\Common\Math;$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>$(DEBUG_BUILD)\lib;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -128,6 +128,9 @@ $(PostBuildEvent)]]></PostBuildEvent>
     <ItemGroup>
         <CppCompile Include="ArduinoController.cpp">
             <BuildOrder>0</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="EnvironmentalSensorReadThread.cpp">
+            <BuildOrder>15</BuildOrder>
         </CppCompile>
         <CppCompile Include="forms\TAboutArduinoControllerForm.cpp">
             <Form>AboutArduinoControllerForm</Form>
@@ -155,11 +158,22 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="frames\TSensorsArduinoFrame.cpp">
             <BuildOrder>9</BuildOrder>
         </CppCompile>
+        <CppCompile Include="frames\TWatchDogServerFrame.cpp">
+            <Form>WatchDogServerFrame</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+            <DependentOn>frames\TWatchDogServerFrame.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Misc.cpp">
             <BuildOrder>3</BuildOrder>
         </CppCompile>
         <CppCompile Include="ShutDownLogic.cpp">
             <BuildOrder>10</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="SNMPWalkThread.cpp">
+            <DependentOn>SNMPWalkThread.h</DependentOn>
+            <BuildOrder>11</BuildOrder>
         </CppCompile>
         <CppCompile Include="TMainForm.cpp">
             <Form>MainForm</Form>
@@ -169,6 +183,14 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </CppCompile>
         <CppCompile Include="UIUtilities.cpp">
             <BuildOrder>11</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="WatchDogSensor.cpp">
+            <DependentOn>WatchDogSensor.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="WatchDogServer.cpp">
+            <DependentOn>WatchDogServer.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
         </CppCompile>
         <CppCompile Include="P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.cpp">
             <Form>PGConnectionFrame</Form>
@@ -182,6 +204,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <FormResources Include="frames\TAboutArduinoServerFrame.dfm"/>
         <FormResources Include="frames\TLightsArduinoFrame.dfm"/>
         <FormResources Include="frames\TArduinoBoardFrame.dfm"/>
+        <FormResources Include="frames\TWatchDogServerFrame.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -238,7 +261,9 @@ $(PostBuildEvent)]]></PostBuildEvent>
                     <VersionInfoKeys Name="CFBundleExecutable"/>
                 </VersionInfoKeys>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="p:\build\debug\BPL\ArrayBotPackage.bpl">File p:\build\debug\BPL\ArrayBotPackage.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="P:\build\debug\BPL\atVCLCore.bpl">ArrayBot VCL Core package</Excluded_Packages>
+                    <Excluded_Packages Name="p:\build\debug\BPL\ArrayBotPackage.bpl">ArrayBotPackage</Excluded_Packages>
+                    <Excluded_Packages Name="p:\build\debug\BPL\ArrayCamPackage.bpl">ArrayCam VCL Core package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k170.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcbofficexp170.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
                 </Excluded_Packages>

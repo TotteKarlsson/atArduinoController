@@ -10,9 +10,13 @@
 #include "mtkMathUtils.h"
 #include "Core/atExceptions.h"
 #include "TLightsArduinoFrame.h"
-#include "TSensorsArduinoFrame.h"
 #include "TSensorsDataModule.h"
-
+#include <IdBaseComponent.hpp>
+#include <IdComponent.hpp>
+#include <IdSNMP.hpp>
+#include <IdUDPBase.hpp>
+#include <IdUDPClient.hpp>
+#include "mtkMoleculixException.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TIntegerLabeledEdit"
@@ -23,6 +27,7 @@
 #pragma link "TPropertyCheckBox"
 #pragma link "TArrayBotBtn"
 #pragma link "TPGConnectionFrame"
+#pragma link "TWatchDogServerFrame"
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
 TMainForm *MainForm;
@@ -42,11 +47,14 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	mLogFileReader(joinPath(getSpecialFolder(CSIDL_LOCAL_APPDATA), gAppExeName, gLogFileName), &logMsg),
     mIniFile(joinPath(gAppDataFolder, "ArduinoController.ini"), true, true),
     mLogLevel(lAny),
+    mWatchDogServerIP("192.168.123.123"),
     mArduinoServer(-1),
     mLightsArduino(mArduinoServer.getLightsArduino()),
-    mSensorsArduino(mArduinoServer.getSensorsArduino()),
 	mBottomPanelVisible(true),
-	mBottomPanelHeight(100)
+	mBottomPanelHeight(100),
+    mReadSensorsThread("c:\\usr\\bin\\snmpget.exe"),
+    mSNMPWalkThread("c:\\usr\\bin\\snmpwalk.exe"),
+	mWatchDogServer()
 {
 	TMemoLogger::mMemoIsEnabled = false;
    	mLogFileReader.start(true);
@@ -54,10 +62,11 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	//Setup UI/INI properties
     mProperties.setSection("UI");
 	mProperties.setIniFile(&mIniFile);
-	mProperties.add((BaseProperty*)  &mLogLevel.setup( 	                    		"LOG_LEVEL",    	 	lAny));
-	mProperties.add((BaseProperty*)  &mArduinoServerPortE->getProperty()->setup(	"SERVER_PORT",    	 	50000));
-	mProperties.add((BaseProperty*)  &mBottomPanelHeight.setup(						"BOTTOM_PANEL_HEIGHT",   100));
-	mProperties.add((BaseProperty*)  &mBottomPanelVisible.setup(  					"BOTTOM_PANEL_VIBILITY", true));
+	mProperties.add((BaseProperty*)  &mLogLevel.setup( 	                    		"LOG_LEVEL",    	 		lAny));
+	mProperties.add((BaseProperty*)  &mArduinoServerPortE->getProperty()->setup(	"SERVER_PORT",    	 		50000));
+	mProperties.add((BaseProperty*)  &mBottomPanelHeight.setup(						"BOTTOM_PANEL_HEIGHT",   	100));
+	mProperties.add((BaseProperty*)  &mBottomPanelVisible.setup(  					"BOTTOM_PANEL_VIBILITY", 	true));
+	mProperties.add((BaseProperty*)  &mWatchDogServerIP.setup(  					"WATHCDOG_SERVER_IP", 		"192.168.123.123"));
 
     mProperties.read();
 	mArduinoServerPortE->update();
@@ -72,6 +81,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 
     //This will update the UI from a thread
     mArduinoServer.assignOnUpdateCallBack(onUpdatesFromArduinoServer);
+	mReadSensorsThread.assignCallBacks(onSensorReadStart, onSensorReadProgress, onSensorReadExit);
 }
 
 __fastcall TMainForm::~TMainForm()
@@ -118,13 +128,6 @@ void __fastcall	TMainForm::setupUIFrames()
     af1->Align = alLeft;
     af1->ConnectBtnClick(NULL);
     mFrames.push_back(af1);
-
-    mSensorsArduino.setName("SENSORS_ARDUINO");
-    TSensorsArduinoFrame* af2 = new TSensorsArduinoFrame(mArduinoServer, mSensorsArduino, mIniFile, this);
-    af2->Parent =  mArduinoSB;
-    af2->Align = alLeft;
-    af2->ConnectBtnClick(NULL);
-    mFrames.push_back(af2);
 }
 
 //This callback is called from the arduino server
@@ -141,12 +144,6 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
             mf->mArduinoServer.broadcast(msg);
 
         	StringList l(msg, ',');
-			if(l.size() == 4 && l[0] == "DHT22_DATA" && sensorsDM)
-            {
-                //Post message to db populator
-                sensorsDM->insertSensorData(toInt(l[3]), toDouble(l[1]), toDouble(l[2]));
-            }
-
 			if(l.size() == 3 && l[0] == "AB_LIGHTS_DATA")
             {
             	StringList v1(l[1],'=');
@@ -275,5 +272,64 @@ void __fastcall TMainForm::LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftSt
     }
 }
 
+void __fastcall TMainForm::Button2Click(TObject *Sender)
+{
+	//We are to run an external executable
+    mReadSensorsThread.run();
+}
+
+void __fastcall	TMainForm::onSensorReadStart(int x, int y)
+{
+	Log(lInfo) << "Starting sensor reads";
+}
+
+void __fastcall	TMainForm::onSensorReadProgress(int x, int y)
+{
+	string *msg (NULL);
+	if(y)
+    {
+		msg = (string*) (y);
+    }
+
+    if(msg)
+    {
+
+	    mEnvSensorDataString = (*msg);
+    	TThread::Synchronize(NULL, consumeEnvironmentSensorData);
+		Log(lInfo) << "Sensor reads progressed: "<< *msg;
+    }
+}
+
+void __fastcall	TMainForm::onSensorReadExit(int x, int y)
+{
+	Log(lInfo) << "Sensor reads finished";
+}
+
+void __fastcall TMainForm::consumeEnvironmentSensorData()
+{
+	//Parse the EnvSensorDataString
+	StringList tokens(mEnvSensorDataString, ':');
+    if(tokens.size() != 3)
+    {
+		Log(lError) << "Bad string format in " << __FUNC__;
+        return;
+    }
+
+    //First token is temp
+    StringList tok1(tokens[0],'=');
+    StringList tok2(tokens[1],'=');
+    StringList tok3(tokens[2],'=');
+
+    sensorsDM->insertSensorData(0, 0, toDouble(tok1[1]), toDouble(tok2[1]), toDouble(tok3[1]));
+
+
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::TWatchDogServerFrame1ArrayBotButton1Click(TObject *Sender)
+
+{
+	//Start 'walk' thread
+}
 
 
