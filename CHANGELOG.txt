@@ -1,3 +1,10 @@
+Release 0.5.3 (Feb 20)
+=======================
+* First version using Geist watchdog sensors and server
+* Removed all old Arduino temperature sensing
+* May wanna rename this application
+* Adding classes to deal with SNMP server
+
 Release 0.5.2 (Nov 16)
 =======================
 * Switched to use PostGres database instead of MySQL
