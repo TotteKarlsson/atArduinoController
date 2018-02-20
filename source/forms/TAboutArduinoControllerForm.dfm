@@ -34,9 +34,9 @@ object AboutArduinoControllerForm: TAboutArduinoControllerForm
     object Label1: TLabel
       Left = 127
       Top = 6
-      Width = 312
+      Width = 359
       Height = 30
-      Caption = 'Smith Lab.  - Allen Institute 2016'
+      Caption = 'Smith Lab.  - Allen Institute 2016-2018'
       Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
