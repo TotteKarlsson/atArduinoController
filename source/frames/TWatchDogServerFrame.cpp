@@ -1,18 +1,147 @@
-//---------------------------------------------------------------------------
-
 #include <vcl.h>
 #pragma hdrstop
-
 #include "TWatchDogServerFrame.h"
+#include "mtkIniFileProperties.h"
+#include "core/WatchDogSensor.h"
+#include "TWatchDogSensorFrame.h"
+#include "TSensorsDataModule.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TSTDStringLabeledEdit"
 #pragma link "TArrayBotBtn"
 #pragma resource "*.dfm"
 TWatchDogServerFrame *WatchDogServerFrame;
+
+using namespace mtk;
+
 //---------------------------------------------------------------------------
 __fastcall TWatchDogServerFrame::TWatchDogServerFrame(TComponent* Owner)
-	: TFrame(Owner)
+	: TFrame(Owner),
+    mWatchDogServer(NULL),
+    mReadSensorsThread("c:\\usr\\bin\\snmpget.exe"),
+    mSNMPWalkThread("c:\\usr\\bin\\snmpwalk.exe")
 {
+	mReadSensorsThread.assignCallBacks(onSensorReadStart, onSensorReadProgress, onSensorReadExit);
 }
+
+void TWatchDogServerFrame::assignWatchDogServer(WatchDogServer* s)
+{
+	mWatchDogServer = s;
+}
+
+void TWatchDogServerFrame::allocateSensorFrames()
+{
+	for(int i = 0; i < mWatchDogServer->getNumberOfSensors(); i++)
+    {
+  		WatchDogSensor*  s = mWatchDogServer->getSensor(i);
+
+        if(s)
+        {
+        	Log(lInfo) << "Creating sensor frame for sensor with ID: "<<s->getDeviceID();
+            TWatchDogSensorFrame* f = new TWatchDogSensorFrame(this);
+            f->populate(s);
+            f->Parent = SensorPanel;
+            mSensorFrames.push_back(f);
+        }
+    }
+}
+
+void __fastcall TWatchDogServerFrame::WalkBtnClick(TObject *Sender)
+{
+	//Start 'walk' thread
+    mSNMPWalkThread.run();
+}
+
+
+void __fastcall TWatchDogServerFrame::ReadSensorsBtnClick(TObject *Sender)
+{
+	//We are to run an external executable
+    mReadSensorsThread.assignServer(mWatchDogServer);
+    mReadSensorsThread.start();
+}
+
+void __fastcall	TWatchDogServerFrame::onSensorReadStart(int x, int y)
+{
+	Log(lInfo) << "Starting sensor reads";
+}
+
+void __fastcall	TWatchDogServerFrame::onSensorReadProgress(int x, int y)
+{
+	string *msg (NULL);
+	if(y)
+    {
+		msg = (string*) (y);
+    }
+
+    if(msg)
+    {
+	    mEnvSensorDataString = (*msg);
+    	TThread::Synchronize(NULL, consumeEnvironmentSensorData);
+		Log(lInfo) << "Sensor reads progressed: "<< *msg;
+    }
+}
+
+void __fastcall	TWatchDogServerFrame::onSensorReadExit(int x, int y)
+{
+	Log(lInfo) << "Sensor reads finished";
+}
+
+void __fastcall TWatchDogServerFrame::consumeEnvironmentSensorData()
+{
+	//Parse the EnvSensorDataString
+	StringList tokens(mEnvSensorDataString, ':');
+    if(tokens.size() != 1)
+    {
+		Log(lError) << "Bad string format in " << __FUNC__;
+        return;
+    }
+
+    StringList tok1(tokens[0],'='); //ID
+
+    //Identify the actual sensor by its ID
+    WatchDogSensor* sensor = mWatchDogServer->getSensorWithID(trim(tok1[1]));
+
+    if(!sensor)
+    {
+    	Log(lError) << "Failed to identify sensor with ID: " <<trim(tok1[1]);
+        return;
+    }
+
+    //Update sensor frame
+    for(int i = 0; i < mSensorFrames.size(); i++)
+    {
+    	if(mSensorFrames[i] && mSensorFrames[i]->getSensor() == sensor)
+        {
+			mSensorFrames[i]->populate(sensor);
+        }
+    }
+
+    //Log to database
+    if(sensor->isPresent())
+    {
+    	sensorsDM->insertSensorData((*sensor));
+    }
+    else
+    {
+    	Log(lError) << "Sensor with ID " << sensor->getDeviceID()<<" is unavailable!";
+    }
+}
+
+
 //---------------------------------------------------------------------------
+void __fastcall TWatchDogServerFrame::EnvSensorsReadsTimerTimer(TObject *Sender)
+{
+	//We are to run an external executable
+    mReadSensorsThread.assignServer(mWatchDogServer);
+    mReadSensorsThread.start();
+}
+
+
+//---------------------------------------------------------------------------
+void __fastcall TWatchDogServerFrame::StartReadsBtnClick(TObject *Sender)
+{
+	EnvSensorsReadsTimer->Enabled = !EnvSensorsReadsTimer->Enabled;
+	StartReadsBtn->Caption = (EnvSensorsReadsTimer->Enabled) ? "Stop Periodic Reads" : "Start Periodic Reads";
+}
+
+

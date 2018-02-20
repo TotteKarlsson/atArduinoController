@@ -256,6 +256,10 @@ object MainForm: TMainForm
     TabOrder = 3
     object TabSheet1: TTabSheet
       Caption = 'Controls'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 0
         Top = 0
@@ -317,68 +321,54 @@ object MainForm: TMainForm
         Height = 97
         Caption = 'Query Sensors'
         TabOrder = 1
-        OnClick = Button2Click
       end
       inline TWatchDogServerFrame1: TWatchDogServerFrame
         Left = 463
         Top = 0
-        Width = 481
+        Width = 1017
         Height = 608
-        Align = alLeft
+        Align = alClient
         TabOrder = 2
-        ExplicitLeft = 752
-        ExplicitTop = 48
-        ExplicitWidth = 481
-        ExplicitHeight = 425
+        ExplicitLeft = 463
+        ExplicitWidth = 1017
+        ExplicitHeight = 608
         inherited GroupBox1: TGroupBox
-          Width = 481
+          Width = 313
           Height = 608
-          ExplicitLeft = 6
-          ExplicitTop = 2
-          ExplicitWidth = 481
+          ExplicitWidth = 313
           ExplicitHeight = 608
-          inherited STDStringLabeledEdit1: TSTDStringLabeledEdit
+          inherited ServerIPE: TSTDStringLabeledEdit
             Height = 31
             EditLabel.Width = 77
             EditLabel.Height = 23
-            EditLabel.ExplicitTop = 38
+            EditLabel.ExplicitLeft = 17
+            EditLabel.ExplicitTop = 22
             EditLabel.ExplicitWidth = 77
             EditLabel.ExplicitHeight = 23
             ExplicitHeight = 31
           end
-          inherited GroupBox2: TGroupBox
-            inherited mMIBRoot: TSTDStringLabeledEdit
-              Height = 31
-              EditLabel.Width = 77
-              EditLabel.Height = 23
-              EditLabel.ExplicitTop = 22
-              EditLabel.ExplicitWidth = 77
-              EditLabel.ExplicitHeight = 23
-              ExplicitHeight = 31
-            end
-            inherited STDStringLabeledEdit3: TSTDStringLabeledEdit
-              Top = 128
-              Height = 31
-              EditLabel.Width = 112
-              EditLabel.Height = 23
-              EditLabel.ExplicitTop = 102
-              EditLabel.ExplicitWidth = 112
-              EditLabel.ExplicitHeight = 23
-              ExplicitTop = 128
-              ExplicitHeight = 31
-            end
-          end
-          inherited ArrayBotButton1: TArrayBotButton
+          inherited WalkBtn: TArrayBotButton
             Height = 33
-            OnClick = TWatchDogServerFrame1ArrayBotButton1Click
             ExplicitHeight = 33
           end
+        end
+        inherited SensorPanel: TFlowPanel
+          Left = 313
+          Width = 704
+          Height = 608
+          ExplicitLeft = 313
+          ExplicitWidth = 704
+          ExplicitHeight = 608
         end
       end
     end
     object TabSheet2: TTabSheet
       Caption = 'Board Settings'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mArduinoSB: TScrollBox
         Left = 0
         Top = 0

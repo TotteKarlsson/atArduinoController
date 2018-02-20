@@ -158,6 +158,13 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="frames\TSensorsArduinoFrame.cpp">
             <BuildOrder>9</BuildOrder>
         </CppCompile>
+        <CppCompile Include="frames\TWatchDogSensorFrame.cpp">
+            <Form>WatchDogSensorFrame</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+            <DependentOn>frames\TWatchDogSensorFrame.h</DependentOn>
+            <BuildOrder>16</BuildOrder>
+        </CppCompile>
         <CppCompile Include="frames\TWatchDogServerFrame.cpp">
             <Form>WatchDogServerFrame</Form>
             <FormType>dfm</FormType>
@@ -184,27 +191,20 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="UIUtilities.cpp">
             <BuildOrder>11</BuildOrder>
         </CppCompile>
-        <CppCompile Include="WatchDogSensor.cpp">
-            <DependentOn>WatchDogSensor.h</DependentOn>
-            <BuildOrder>14</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="WatchDogServer.cpp">
-            <DependentOn>WatchDogServer.h</DependentOn>
-            <BuildOrder>12</BuildOrder>
-        </CppCompile>
         <CppCompile Include="P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.cpp">
             <Form>PGConnectionFrame</Form>
             <DesignClass>TFrame</DesignClass>
             <DependentOn>P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.h</DependentOn>
             <BuildOrder>13</BuildOrder>
         </CppCompile>
-        <FormResources Include="TMainForm.dfm"/>
+        <FormResources Include="frames\TWatchDogServerFrame.dfm"/>
         <FormResources Include="P:\libs\atapi\source\vcl\frames\TPGConnectionFrame.dfm"/>
+        <FormResources Include="TMainForm.dfm"/>
         <FormResources Include="forms\TAboutArduinoControllerForm.dfm"/>
         <FormResources Include="frames\TAboutArduinoServerFrame.dfm"/>
-        <FormResources Include="frames\TLightsArduinoFrame.dfm"/>
+        <FormResources Include="frames\TWatchDogSensorFrame.dfm"/>
         <FormResources Include="frames\TArduinoBoardFrame.dfm"/>
-        <FormResources Include="frames\TWatchDogServerFrame.dfm"/>
+        <FormResources Include="frames\TLightsArduinoFrame.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

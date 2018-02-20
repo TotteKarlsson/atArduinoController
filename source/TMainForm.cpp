@@ -47,14 +47,11 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	mLogFileReader(joinPath(getSpecialFolder(CSIDL_LOCAL_APPDATA), gAppExeName, gLogFileName), &logMsg),
     mIniFile(joinPath(gAppDataFolder, "ArduinoController.ini"), true, true),
     mLogLevel(lAny),
-    mWatchDogServerIP("192.168.123.123"),
     mArduinoServer(-1),
     mLightsArduino(mArduinoServer.getLightsArduino()),
 	mBottomPanelVisible(true),
 	mBottomPanelHeight(100),
-    mReadSensorsThread("c:\\usr\\bin\\snmpget.exe"),
-    mSNMPWalkThread("c:\\usr\\bin\\snmpwalk.exe"),
-	mWatchDogServer()
+	mWatchDogServer(mIniFile)
 {
 	TMemoLogger::mMemoIsEnabled = false;
    	mLogFileReader.start(true);
@@ -66,10 +63,10 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	mProperties.add((BaseProperty*)  &mArduinoServerPortE->getProperty()->setup(	"SERVER_PORT",    	 		50000));
 	mProperties.add((BaseProperty*)  &mBottomPanelHeight.setup(						"BOTTOM_PANEL_HEIGHT",   	100));
 	mProperties.add((BaseProperty*)  &mBottomPanelVisible.setup(  					"BOTTOM_PANEL_VIBILITY", 	true));
-	mProperties.add((BaseProperty*)  &mWatchDogServerIP.setup(  					"WATHCDOG_SERVER_IP", 		"192.168.123.123"));
 
     mProperties.read();
 	mArduinoServerPortE->update();
+	mWatchDogServer.readIniParameters();
 
     BottomPanel->Visible 	= mBottomPanelVisible;
     BottomPanel->Height 	= mBottomPanelHeight;
@@ -81,7 +78,6 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 
     //This will update the UI from a thread
     mArduinoServer.assignOnUpdateCallBack(onUpdatesFromArduinoServer);
-	mReadSensorsThread.assignCallBacks(onSensorReadStart, onSensorReadProgress, onSensorReadExit);
 }
 
 __fastcall TMainForm::~TMainForm()
@@ -117,6 +113,9 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
    		TPGConnectionFrame1->init(&mIniFile, "POSTGRESDB_CONNECTION");
 	    TPGConnectionFrame1->ConnectA->Execute();
     }
+
+	TWatchDogServerFrame1->assignWatchDogServer(&mWatchDogServer);
+	TWatchDogServerFrame1->allocateSensorFrames();
 }
 
 //---------------------------------------------------------------------------
@@ -160,14 +159,7 @@ void TMainForm::onUpdatesFromArduinoServer(const string& new_msg)
                 //Is LED On?
                 if(v2.size() == 2)
                 {
-                	if(compareNoCase(v2[1], "True"))
-                    {
-                    	mf->LEDBtn->Caption = "Flip LEDs OFF";
-                    }
-                    else
-                    {
-                    	mf->LEDBtn->Caption = "Flip LEDs ON";
-                    }
+                   	mf->LEDBtn->Caption = (compareNoCase(v2[1], "True")) ? "Flip LEDs OFF" : "Flip LEDs ON";
                 }
         	}
         }
@@ -271,65 +263,4 @@ void __fastcall TMainForm::LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftSt
 		DriveTB->Position  = LEDDriveE->getValue();
     }
 }
-
-void __fastcall TMainForm::Button2Click(TObject *Sender)
-{
-	//We are to run an external executable
-    mReadSensorsThread.run();
-}
-
-void __fastcall	TMainForm::onSensorReadStart(int x, int y)
-{
-	Log(lInfo) << "Starting sensor reads";
-}
-
-void __fastcall	TMainForm::onSensorReadProgress(int x, int y)
-{
-	string *msg (NULL);
-	if(y)
-    {
-		msg = (string*) (y);
-    }
-
-    if(msg)
-    {
-
-	    mEnvSensorDataString = (*msg);
-    	TThread::Synchronize(NULL, consumeEnvironmentSensorData);
-		Log(lInfo) << "Sensor reads progressed: "<< *msg;
-    }
-}
-
-void __fastcall	TMainForm::onSensorReadExit(int x, int y)
-{
-	Log(lInfo) << "Sensor reads finished";
-}
-
-void __fastcall TMainForm::consumeEnvironmentSensorData()
-{
-	//Parse the EnvSensorDataString
-	StringList tokens(mEnvSensorDataString, ':');
-    if(tokens.size() != 3)
-    {
-		Log(lError) << "Bad string format in " << __FUNC__;
-        return;
-    }
-
-    //First token is temp
-    StringList tok1(tokens[0],'=');
-    StringList tok2(tokens[1],'=');
-    StringList tok3(tokens[2],'=');
-
-    sensorsDM->insertSensorData(0, 0, toDouble(tok1[1]), toDouble(tok2[1]), toDouble(tok3[1]));
-
-
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::TWatchDogServerFrame1ArrayBotButton1Click(TObject *Sender)
-
-{
-	//Start 'walk' thread
-}
-
 

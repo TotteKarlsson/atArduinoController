@@ -6,6 +6,9 @@
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
 #include "mtkMoleculixException.h"
+#include "mtkStringList.h"
+
+
 //using Poco::Path;
 using namespace Poco;
 
@@ -71,27 +74,14 @@ void SNMPWalkThread::run()
 
         //Read all three values before reporting progress
         string s;
+        StringList walk;
         while (!istr.eof())
         {
 
             s += (char) c;
             if((c == '\n' || c == '\r') && s.size() > 1)
             {
-            	Log(lDebug5) << "Parsing string: "<< s;
-//            	progress = parseOutput(s);
-//
-//                if(onProgress && progress == 3)
-//                {
-//                	string msg;
-//                    //Let the calling application do whatever with the data
-//                    //in the onProgress callback
-//                    stringstream m;
-//                    m <<"T = "<<mTemperature<<":"<<"H = "<<mHumidity<<":"<<"D = "<<mDewPoint;
-//                    msg = m.str();
-//                    onProgress(progress, (int) &msg);
-//                }
-
-                //Data should be consumed by now
+            	walk.append(s);
                 s.clear();
             }
 
@@ -102,6 +92,8 @@ void SNMPWalkThread::run()
             }
         }
 
+        walk.reverse();
+        Log(lInfo) << walk.asString();
         int rc = ph.wait();
         Log(lDebug5) <<"RC: "<<rc;
     }

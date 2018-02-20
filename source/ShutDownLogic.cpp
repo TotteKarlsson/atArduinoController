@@ -73,9 +73,10 @@ void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
 
     mBottomPanelVisible = BottomPanel->Visible ;
     mBottomPanelHeight = BottomPanel->Height;
-
 	mProperties.write();
-    mIniFile.save();
 
+    mWatchDogServer.writeIniParameters();
+	//Do thist last
+    mIniFile.save();
 }
 

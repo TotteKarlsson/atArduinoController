@@ -16,15 +16,12 @@ using namespace mtk;
 EnvironmentalSensorReadThread::EnvironmentalSensorReadThread(const string& exe)
 :
 mExecutable(exe),
-mGetTempMIB("1.3.6.1.4.1.21239.5.1.2.1.5"),
-mGetTempResponseTag("21239.5.1.2.1.5"),
-mGetHumidityMIB("1.3.6.1.4.1.21239.5.1.2.1.6"),
-mGetHumidityResponseTag("21239.5.1.2.1.6"),
-mGetDewPointMIB("1.3.6.1.4.1.21239.5.1.2.1.7"),
-mGetDewPointResponseTag("21239.5.1.2.1.7"),
+mAlias(""),
+mIsPresent(false),
 mTemperature(0),
 mHumidity(0),
-mDewPoint(0)
+mDewPoint(0),
+mServer(NULL)
 {
 
 }
@@ -36,6 +33,36 @@ void EnvironmentalSensorReadThread::assignCallBacks(Callback one, Callback two, 
     onExit 		= three;
 }
 
+void EnvironmentalSensorReadThread::assignServer(WatchDogServer* aServer)
+{
+	//Retrieve MIBS from the sensor
+    mServer = aServer;
+}
+
+string	EnvironmentalSensorReadThread::getAliasOID(WatchDogSensor* sensor)
+{
+	return mServer->getOIDRoot() + "." + mtk::toString(sensor->getSubRootOID()) + "." + mServer->AliasOID + "." + mtk::toString(sensor->getInstanceNr());
+}
+
+string	EnvironmentalSensorReadThread::getPresentOID(WatchDogSensor* sensor)
+{
+	return mServer->getOIDRoot() + "." + mtk::toString(sensor->getSubRootOID()) + "." + mServer->AvailableOID + "." + mtk::toString(sensor->getInstanceNr());
+}
+
+string	EnvironmentalSensorReadThread::getTempOID(WatchDogSensor* sensor)
+{
+	return mServer->getOIDRoot() + "." + mtk::toString(sensor->getSubRootOID()) + "." + mServer->TemperatureOID + "." + mtk::toString(sensor->getInstanceNr());
+}
+
+string	EnvironmentalSensorReadThread::getHumidityOID(WatchDogSensor* sensor)
+{
+	return mServer->getOIDRoot() + "." + mtk::toString(sensor->getSubRootOID()) + "." + mServer->HumidityOID + "." + mtk::toString(sensor->getInstanceNr());
+}
+
+string	EnvironmentalSensorReadThread::getDewPointOID(WatchDogSensor* sensor)
+{
+	return mServer->getOIDRoot() + "." + mtk::toString(sensor->getSubRootOID()) + "." + mServer->DewPointOID + "." + mtk::toString(sensor->getInstanceNr());
+}
 
 void EnvironmentalSensorReadThread::run()
 {
@@ -56,64 +83,19 @@ void EnvironmentalSensorReadThread::run()
             throw(ae);
         }
 
-        //Setup arguments
-        StringList args;
-        args.append("-v 2c -c public 192.168.123.123");
-        args.append("1.3.6.1.2.1.1.5.0");
-        args.append(mGetTempMIB + ".1");
-        args.append(mGetHumidityMIB + ".1");
-        args.append(mGetDewPointMIB + ".1");
-        Log(lDebug5) << "SNMP arguments: " << args.asString();
 
-        //Capture output
-        Pipe outPipe;
-
-		//Capture stdout and stderr to outPipe
-        ProcessHandle ph = Process::launch(mExecutable, args, NULL, &outPipe, &outPipe);
-
-        //Use stream objects to read and write to the pipes
-        PipeInputStream istr(outPipe);
-
-
-		int progress(0);
-        int c = istr.get();
-        bool exitRequested(false);
-
-        //Read all three values before reporting progress
-        string s;
-        while (!istr.eof())
+        for(int i = 0; i < mServer->getNumberOfSensors(); i++)
         {
+	        //Query one sensor at a time
+    	    WatchDogSensor* sensor = mServer->getSensor(i);
 
-            s += (char) c;
-            if((c == '\n' || c == '\r') && s.size() > 1)
+
+            if(sensor != 0 && !querySensor(sensor))
             {
-            	Log(lDebug5) << "Parsing string: "<< s;
-            	progress = parseOutput(s);
-
-                if(onProgress && progress == 3)
-                {
-                	string msg;
-                    //Let the calling application do whatever with the data
-                    //in the onProgress callback
-                    stringstream m;
-                    m <<"T = "<<mTemperature<<":"<<"H = "<<mHumidity<<":"<<"D = "<<mDewPoint;
-                    msg = m.str();
-                    onProgress(progress, (int) &msg);
-                }
-
-                //Data should be consumed by now
-                s.clear();
-            }
-
-            c = istr.get();
-            if(mIsTimeToDie && !exitRequested)
-            {
-                exitRequested = true;
+            	Log(lError) << "There was a problem reading sensor with ID: "<<sensor->getDeviceID();
             }
         }
 
-        int rc = ph.wait();
-        Log(lDebug5) <<"RC: "<<rc;
     }
     catch(...)
     {
@@ -131,37 +113,131 @@ void EnvironmentalSensorReadThread::run()
 	mIsFinished = true;
 }
 
-//Parsing text can be ugly..
-int EnvironmentalSensorReadThread::parseOutput(const string& s)
+
+bool EnvironmentalSensorReadThread::querySensor(WatchDogSensor* sensor)
 {
-	//Check string for MIB content
+        //Setup arguments
+        StringList args;
+        args.append("-O n -v 2c -c public 192.168.123.123");
+
+        args.append(getAliasOID(sensor));
+        args.append(getPresentOID(sensor));
+        args.append(getTempOID(sensor));
+        args.append(getHumidityOID(sensor));
+        args.append(getDewPointOID(sensor));
+
+        Log(lDebug5) << "SNMP arguments: " << args.asString();
+
+        //Capture output
+        Pipe outPipe;
+
+		//Capture stdout and stderr to outPipe
+        ProcessHandle ph = Process::launch(mExecutable, args, NULL, &outPipe, &outPipe);
+
+        //Use stream objects to read and write to the pipes
+        PipeInputStream istr(outPipe);
+
+		int progress(0);
+        int c = istr.get();
+
+        //Read all values before reporting progress
+        string s;
+        while (!istr.eof())
+        {
+
+            s += (char) c;
+            if((c == '\n' || c == '\r') && s.size() > 1)
+            {
+            	Log(lDebug5) << "Parsing string: "<< s;
+            	progress = parseOutput(s, sensor);
+
+                if(onProgress && progress == 5)
+                {
+                	string msg;
+                    //Let the calling application do whatever with the data
+                    //in the onProgress callback
+                    stringstream m;
+                    m <<"DeviceID = "<<sensor->getDeviceID();
+                    msg = m.str();
+                    onProgress(progress, (int) &msg);
+                }
+                else if(progress == -1)
+                {
+                	Log(lError) << s;
+                    mIsTimeToDie = true;
+                }
+
+                //Data should be consumed by now
+                s.clear();
+            }
+
+            c = istr.get();
+            if(mIsTimeToDie)
+            {
+            	break;
+            }
+        }
+
+	int rc = ph.wait();
+    Log(lDebug5) <<"RC: "<<rc;
+	return true;
+}
+
+//Parsing text can be ugly..
+int EnvironmentalSensorReadThread::parseOutput(const string& s, WatchDogSensor* sensor)
+{
+	//Update the sensor
+	//Check string for content
     try
     {
-        if(contains(mGetTempResponseTag, s))
+		StringList tokens(s, ':');
+
+        string valueToken = (tokens.count() == 2) ? trimChars(tokens[1], " \r") : string("");
+        if(contains(getAliasOID(sensor), s))
+        {
+           	mAlias = valueToken;
+            mAlias = trim(mAlias, 34);
+            sensor->setAlias(mAlias);
+            return 1;
+        }
+
+        if(contains(getPresentOID(sensor), s))
+        {
+            mIsPresent = toBool(valueToken);
+            sensor->isPresent(mIsPresent);
+            return 2;
+        }
+
+        if(contains(getTempOID(sensor), s))
         {
             //Got a temperature
             mTemperature = toInt(s, false) / 10.0;
-            return 1;
-        }
-        else if(contains(mGetHumidityResponseTag, s))
-        {
-            //Got a Humidity
-            mHumidity = toInt(s, false);
-            return 2;
-        }
-        else if(contains(mGetDewPointResponseTag, s))
-        {
-            //Got a Humidity
-            mDewPoint = toInt(s, false) / 10.0;
+            sensor->setTemperature(mTemperature);
             return 3;
         }
+        if(contains(getHumidityOID(sensor), s))
+        {
+            mHumidity = toInt(s, false);
+            sensor->setHumidity(mHumidity);
+            return 4;
+        }
 
-        return 0;
+        if(contains(getDewPointOID(sensor), s))
+        {
+            mDewPoint = toInt(s, false) / 10.0;
+            sensor->setDewPoint(mDewPoint);
+            return 5;
+        }
+
+        if(contains("Timeout", s))
+        {
+        	return -1;
+        }
 	}
 	catch(const MoleculixException& e)
    	{
         Log(lError) << " There was a problem: "<<e.what();
    	}
-
+    return 0;
 }
 

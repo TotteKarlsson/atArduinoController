@@ -17,6 +17,7 @@
 #include "Poco/Timestamp.h"
 #include "TSTDStringLabeledEdit.h"
 #include "TRegistryForm.h"
+#include "mtkIniFile.h"
 #include "mtkIniFileProperties.h"
 #include <Vcl.StdActns.hpp>
 #include <Vcl.Menus.hpp>
@@ -24,7 +25,7 @@
 #include "mtkLogLevel.h"
 #include "abUIDataStructures.h"
 #include "abApplicationMessages.h"
-#include "mtkIniFile.h"
+
 #include "arduino/atArduinoServer.h"
 #include "mtkFloatLabel.h"
 #include "TIntLabel.h"
@@ -38,9 +39,7 @@
 #include <Vcl.Bind.DBEngExt.hpp>
 #include <Vcl.Bind.Editors.hpp>
 #include "TPGConnectionFrame.h"
-#include "EnvironmentalSensorReadThread.h"
-#include "SNMPWalkThread.h"
-#include "WatchDogServer.h"
+#include "core/WatchDogServer.h"
 #include "TWatchDogServerFrame.h"
 using Poco::Timestamp;
 using mtk::IniFileProperties;
@@ -124,24 +123,21 @@ class TMainForm : public TRegistryForm
 	void __fastcall mShowBottomPanelBtnClick(TObject *Sender);
 	void __fastcall DriveTBChange(TObject *Sender);
 	void __fastcall LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
-	void __fastcall Button2Click(TObject *Sender);
-	void __fastcall TWatchDogServerFrame1ArrayBotButton1Click(TObject *Sender);
+
 
 
     private:
         LogFileReader                       mLogFileReader;
         void __fastcall                     logMsg();
 
-		void 						        setupWindowTitle();
-        void __fastcall					    setupUIFrames();
-
         IniFile						        mIniFile;
         IniFileProperties  			        mProperties;
 		Property<mtk::LogLevel>        		mLogLevel;
 		Property<int>        				mBottomPanelHeight;
 		Property<bool>        				mBottomPanelVisible;
-        Property<string>					mWatchDogServerIP;
 
+		void 						        setupWindowTitle();
+        void __fastcall					    setupUIFrames();
 
 		void __fastcall		                OnException();
 
@@ -150,15 +146,7 @@ class TMainForm : public TRegistryForm
 		void __fastcall						afterDBServerConnect(System::TObject* Sender);
 		void __fastcall						afterDBServerDisconnect(System::TObject* Sender);
 
-	    EnvironmentalSensorReadThread		mReadSensorsThread;
-	    SNMPWalkThread						mSNMPWalkThread;
-        void __fastcall						onSensorReadStart(int, int);
-        void __fastcall						onSensorReadProgress(int, int);
-        void __fastcall						onSensorReadExit(int, int);
-
         WatchDogServer						mWatchDogServer;
-        string								mEnvSensorDataString;
-		void __fastcall						consumeEnvironmentSensorData();
 
 	public:
 		__fastcall 					        TMainForm(TComponent* Owner);
