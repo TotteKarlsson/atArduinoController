@@ -12,6 +12,11 @@ void __fastcall TMainForm::ShutDownTimerTimer(TObject *Sender)
         UIUpdateTimer->Enabled = false;
     }
 
+    if(TWatchDogServerFrame1->canClose() == false)
+    {
+	    TWatchDogServerFrame1->shutDown();
+    }
+
     if(mArduinoServer.isRunning())
     {
     	mArduinoServer.shutDown();
@@ -51,10 +56,11 @@ void __fastcall TMainForm::FormCloseQuery(TObject *Sender, bool &CanClose)
 	CanClose = (mLogFileReader.isRunning()) ? false : true;
 
 	//Check if active stuff is going on.. if so call the ShutDown in the
-    //Timer fire    if(
+    //Timer fire
    	CanClose = (mFrames.size()
             	|| mArduinoServer.isRunning()
 		        || (pgDM && pgDM->SQLConnection1->Connected)
+                || (TWatchDogServerFrame1->canClose() == false)
                 ) ? false : true;
 
 

@@ -83,19 +83,20 @@ void EnvironmentalSensorReadThread::run()
             throw(ae);
         }
 
-
         for(int i = 0; i < mServer->getNumberOfSensors(); i++)
         {
+            if(mIsTimeToDie)
+            {
+            	break;
+            }
 	        //Query one sensor at a time
     	    WatchDogSensor* sensor = mServer->getSensor(i);
-
 
             if(sensor != 0 && !querySensor(sensor))
             {
             	Log(lError) << "There was a problem reading sensor with ID: "<<sensor->getDeviceID();
             }
         }
-
     }
     catch(...)
     {

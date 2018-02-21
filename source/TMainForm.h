@@ -126,6 +126,7 @@ class TMainForm : public TRegistryForm
 
 
 
+
     private:
         LogFileReader                       mLogFileReader;
         void __fastcall                     logMsg();

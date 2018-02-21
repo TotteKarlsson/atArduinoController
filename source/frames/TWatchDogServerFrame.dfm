@@ -2,13 +2,13 @@ object WatchDogServerFrame: TWatchDogServerFrame
   Left = 0
   Top = 0
   Width = 883
-  Height = 306
+  Height = 356
   TabOrder = 0
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
     Width = 297
-    Height = 306
+    Height = 356
     Align = alLeft
     Caption = 'WatchDog Server Settings'
     TabOrder = 0
@@ -46,7 +46,7 @@ object WatchDogServerFrame: TWatchDogServerFrame
     end
     object StartReadsBtn: TArrayBotButton
       Left = 17
-      Top = 224
+      Top = 286
       Width = 256
       Height = 49
       Caption = 'Start Periodic Reads'
@@ -54,12 +54,23 @@ object WatchDogServerFrame: TWatchDogServerFrame
       OnClick = StartReadsBtnClick
       SoundID = 'BUTTON_CLICK_4'
     end
+    object PeriodicReadE: TIntegerLabeledEdit
+      Left = 17
+      Top = 245
+      Width = 121
+      Height = 21
+      EditLabel.Width = 74
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Read Period (s)'
+      TabOrder = 4
+      Text = '0'
+    end
   end
-  object SensorPanel: TFlowPanel
+  object SensorPanel: TScrollBox
     Left = 297
     Top = 0
     Width = 586
-    Height = 306
+    Height = 356
     Align = alClient
     TabOrder = 1
   end

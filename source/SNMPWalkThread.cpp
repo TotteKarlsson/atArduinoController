@@ -7,23 +7,18 @@
 #include "Poco/StreamCopier.h"
 #include "mtkMoleculixException.h"
 #include "mtkStringList.h"
-
+//---------------------------------------------------------------------------
 
 //using Poco::Path;
 using namespace Poco;
-
-//---------------------------------------------------------------------------
-
 using namespace mtk;
 
 SNMPWalkThread::SNMPWalkThread(const string& exe)
 :
 mExecutable(exe),
 mIP("192.168.123.123"),
-mMIBRoot("1.3.6.1.4")
-{
-
-}
+mOIDRoot("1.3.6.1.4")
+{}
 
 void SNMPWalkThread::assignCallBacks(Callback one, Callback two, Callback three)
 {
@@ -32,6 +27,11 @@ void SNMPWalkThread::assignCallBacks(Callback one, Callback two, Callback three)
     onExit 		= three;
 }
 
+void SNMPWalkThread::setWalkParameters(const string& ip, const string& oidRoot)
+{
+	mIP = ip;
+    mOIDRoot = oidRoot;
+}
 
 void SNMPWalkThread::run()
 {
@@ -55,7 +55,7 @@ void SNMPWalkThread::run()
         //Setup arguments
         StringList args;
         args.append("-v 2c -c public " + mIP);
-        args.append(mMIBRoot);
+        args.append(mOIDRoot);
         Log(lDebug5) << "SNMP WALK arguments: " << args.asString();
 
         //Capture output

@@ -9,6 +9,7 @@
 #pragma package(smart_init)
 #pragma link "TSTDStringLabeledEdit"
 #pragma link "TArrayBotBtn"
+#pragma link "TIntegerLabeledEdit"
 #pragma resource "*.dfm"
 TWatchDogServerFrame *WatchDogServerFrame;
 
@@ -24,9 +25,24 @@ __fastcall TWatchDogServerFrame::TWatchDogServerFrame(TComponent* Owner)
 	mReadSensorsThread.assignCallBacks(onSensorReadStart, onSensorReadProgress, onSensorReadExit);
 }
 
+bool TWatchDogServerFrame::canClose()
+{
+	return (mSNMPWalkThread.isRunning() || mReadSensorsThread.isRunning()) ? false : true;
+}
+
+void TWatchDogServerFrame::shutDown()
+{
+	mSNMPWalkThread.stop();
+    mReadSensorsThread.stop();
+}
+
 void TWatchDogServerFrame::assignWatchDogServer(WatchDogServer* s)
 {
 	mWatchDogServer = s;
+    ServerIPE->assignExternalProperty(&mWatchDogServer->getServerIPProperty(), true);
+    ServerIPE->update();
+
+	PeriodicReadE->assignExternalProperty(&mWatchDogServer->getReadCycleTimeProperty(), true);
 }
 
 void TWatchDogServerFrame::allocateSensorFrames()
@@ -35,23 +51,26 @@ void TWatchDogServerFrame::allocateSensorFrames()
     {
   		WatchDogSensor*  s = mWatchDogServer->getSensor(i);
 
-        if(s)
+        if(!s)
         {
-        	Log(lInfo) << "Creating sensor frame for sensor with ID: "<<s->getDeviceID();
-            TWatchDogSensorFrame* f = new TWatchDogSensorFrame(this);
-            f->populate(s);
-            f->Parent = SensorPanel;
-            mSensorFrames.push_back(f);
+        	continue;
         }
+
+        Log(lInfo) << "Creating sensor frame for sensor with ID: "<<s->getDeviceID();
+        TWatchDogSensorFrame* f = new TWatchDogSensorFrame(this);
+        f->populate(s);
+        f->Parent = SensorPanel;
+        f->Align = alLeft;
+        mSensorFrames.push_back(f);
     }
 }
 
 void __fastcall TWatchDogServerFrame::WalkBtnClick(TObject *Sender)
 {
 	//Start 'walk' thread
-    mSNMPWalkThread.run();
+	mSNMPWalkThread.setWalkParameters(ServerIPE->getValue(), "1.3.6.1.4");
+    mSNMPWalkThread.start(true);
 }
-
 
 void __fastcall TWatchDogServerFrame::ReadSensorsBtnClick(TObject *Sender)
 {
@@ -127,20 +146,26 @@ void __fastcall TWatchDogServerFrame::consumeEnvironmentSensorData()
     }
 }
 
-
 //---------------------------------------------------------------------------
 void __fastcall TWatchDogServerFrame::EnvSensorsReadsTimerTimer(TObject *Sender)
 {
-	//We are to run an external executable
-    mReadSensorsThread.assignServer(mWatchDogServer);
-    mReadSensorsThread.start();
+	if(!mReadSensorsThread.isRunning())
+    {
+		//We are to run an external executable
+	    mReadSensorsThread.assignServer(mWatchDogServer);
+    	mReadSensorsThread.start();
+    }
+    else
+    {
+    	Log(lDebug) << "Reading sensor thread is already running";
+    }
 }
-
 
 //---------------------------------------------------------------------------
 void __fastcall TWatchDogServerFrame::StartReadsBtnClick(TObject *Sender)
 {
 	EnvSensorsReadsTimer->Enabled = !EnvSensorsReadsTimer->Enabled;
+	EnvSensorsReadsTimer->Interval = PeriodicReadE->getValue() * 1000; //ms
 	StartReadsBtn->Caption = (EnvSensorsReadsTimer->Enabled) ? "Stop Periodic Reads" : "Start Periodic Reads";
 }
 

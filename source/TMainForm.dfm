@@ -256,10 +256,6 @@ object MainForm: TMainForm
     TabOrder = 3
     object TabSheet1: TTabSheet
       Caption = 'Controls'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 0
         Top = 0
@@ -351,8 +347,18 @@ object MainForm: TMainForm
             Height = 33
             ExplicitHeight = 33
           end
+          inherited PeriodicReadE: TIntegerLabeledEdit
+            Height = 31
+            EditLabel.Width = 129
+            EditLabel.Height = 23
+            EditLabel.ExplicitLeft = 17
+            EditLabel.ExplicitTop = 219
+            EditLabel.ExplicitWidth = 129
+            EditLabel.ExplicitHeight = 23
+            ExplicitHeight = 31
+          end
         end
-        inherited SensorPanel: TFlowPanel
+        inherited SensorPanel: TScrollBox
           Left = 313
           Width = 704
           Height = 608
@@ -360,15 +366,15 @@ object MainForm: TMainForm
           ExplicitWidth = 704
           ExplicitHeight = 608
         end
+        inherited EnvSensorsReadsTimer: TTimer
+          Left = 96
+          Top = 376
+        end
       end
     end
     object TabSheet2: TTabSheet
       Caption = 'Board Settings'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mArduinoSB: TScrollBox
         Left = 0
         Top = 0
@@ -537,7 +543,7 @@ object MainForm: TMainForm
     Top = 5
   end
   object GetEnvironmentNumbersTimer: TTimer
-    Left = 536
-    Top = 496
+    Left = 544
+    Top = 560
   end
 end

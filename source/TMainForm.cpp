@@ -116,6 +116,7 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 
 	TWatchDogServerFrame1->assignWatchDogServer(&mWatchDogServer);
 	TWatchDogServerFrame1->allocateSensorFrames();
+    TWatchDogServerFrame1->StartReadsBtn->Click();
 }
 
 //---------------------------------------------------------------------------
@@ -263,4 +264,5 @@ void __fastcall TMainForm::LEDDriveEKeyDown(TObject *Sender, WORD &Key, TShiftSt
 		DriveTB->Position  = LEDDriveE->getValue();
     }
 }
+
 

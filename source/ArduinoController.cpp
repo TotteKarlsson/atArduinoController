@@ -27,7 +27,6 @@ using namespace std;
 extern string       gLogFileLocation            = "";
 extern string		gAppExeName					= "ArduinoController";
 extern string       gLogFileName                = gAppExeName + ".log";
-
 extern string 		gApplicationRegistryRoot  	= "\\Software\\Allen Institute\\ArduinoController\\0.5.0";
 extern string 		gAppDataFolder 				= joinPath(getSpecialFolder(CSIDL_LOCAL_APPDATA), gAppExeName);
 static HWND         gOtherAppWindow             = NULL;
@@ -36,7 +35,6 @@ extern string       gRestartMutexName           = gAppExeName + "RestartMutex";
 extern string       gFullDateTimeFormat         = "%Y-%m-%dT%H:%M:%S";
 extern string       gDateFormat                 = "%Y-%m-%d";
 extern string       gTimeFormat                 = "%H:%M:%S";
-
 extern string       gCommonAppDataLocation      = "";
 extern bool         gIsDevelopmentRelease       = false;
 extern bool         gAppIsStartingUp            = true;

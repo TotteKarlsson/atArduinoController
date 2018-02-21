@@ -12,6 +12,7 @@
 #include "core/WatchDogServer.h"
 #include "EnvironmentalSensorReadThread.h"
 #include "SNMPWalkThread.h"
+#include "TIntegerLabeledEdit.h"
 //---------------------------------------------------------------------------
 
 
@@ -19,18 +20,20 @@ class TWatchDogSensorFrame;
 
 class TWatchDogServerFrame : public TFrame
 {
+	friend WatchDogServer;
     __published:	// IDE-managed Components
 		TSTDStringLabeledEdit *ServerIPE;
         TGroupBox *GroupBox1;
 		TArrayBotButton *WalkBtn;
-		TFlowPanel *SensorPanel;
 		TArrayBotButton *ReadSensorsBtn;
-	TArrayBotButton *StartReadsBtn;
-	TTimer *EnvSensorsReadsTimer;
+		TArrayBotButton *StartReadsBtn;
+		TTimer *EnvSensorsReadsTimer;
+		TIntegerLabeledEdit *PeriodicReadE;
+		TScrollBox *SensorPanel;
 		void __fastcall WalkBtnClick(TObject *Sender);
 		void __fastcall ReadSensorsBtnClick(TObject *Sender);
-	void __fastcall EnvSensorsReadsTimerTimer(TObject *Sender);
-	void __fastcall StartReadsBtnClick(TObject *Sender);
+		void __fastcall EnvSensorsReadsTimerTimer(TObject *Sender);
+		void __fastcall StartReadsBtnClick(TObject *Sender);
 
     private:
     	WatchDogServer*						mWatchDogServer;
@@ -47,6 +50,8 @@ class TWatchDogServerFrame : public TFrame
         __fastcall 			                TWatchDogServerFrame(TComponent* Owner);
         void				                assignWatchDogServer(WatchDogServer* s);
         void				                allocateSensorFrames();
+        bool								canClose();
+        void								shutDown();
 };
 
 extern PACKAGE TWatchDogServerFrame *WatchDogServerFrame;
