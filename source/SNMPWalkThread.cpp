@@ -5,7 +5,7 @@
 #include "Poco/Process.h"
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
-#include "mtkMoleculixException.h"
+#include "dslException.h"
 #include "mtkStringList.h"
 //---------------------------------------------------------------------------
 
@@ -122,7 +122,7 @@ int SNMPWalkThread::parseOutput(const string& s)
 
         return 0;
 	}
-	catch(const MoleculixException& e)
+	catch(const DSLException& e)
    	{
         Log(lError) << " There was a problem: "<<e.what();
    	}

@@ -45,3 +45,4 @@ Debug
 /*.dsk
 /apps/ArduinoServer/crash_dump
 /apps/ArduinoServer/crash_dump_2
+*.stat

@@ -375,6 +375,10 @@ object MainForm: TMainForm
     object TabSheet2: TTabSheet
       Caption = 'Board Settings'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mArduinoSB: TScrollBox
         Left = 0
         Top = 0
@@ -538,7 +542,6 @@ object MainForm: TMainForm
   object BindingsList1: TBindingsList
     Methods = <>
     OutputConverters = <>
-    UseAppManager = True
     Left = 20
     Top = 5
   end

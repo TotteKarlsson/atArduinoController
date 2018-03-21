@@ -5,7 +5,7 @@
 #include "Poco/Process.h"
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
-#include "mtkMoleculixException.h"
+#include "dslException.h"
 //using Poco::Path;
 using namespace Poco;
 
@@ -235,7 +235,7 @@ int EnvironmentalSensorReadThread::parseOutput(const string& s, WatchDogSensor* 
         	return -1;
         }
 	}
-	catch(const MoleculixException& e)
+	catch(const DSLException& e)
    	{
         Log(lError) << " There was a problem: "<<e.what();
    	}

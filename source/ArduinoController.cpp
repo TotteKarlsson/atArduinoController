@@ -54,13 +54,13 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		// Initialize restart code
 		// Check if this instance is restarted and
 		// wait while previos instance finish
-		if (mtk::checkForCommandLineFlag("--Restart"))
-		{
-            //TODO: Fix this.. not working properly..
-            //            MessageDlg("Wait...", mtWarning, TMsgDlgButtons() << mbOK, 0);
-			mtk::WaitForPreviousProcessToFinish(gRestartMutexName);
-            Sleep(1000);
-		}
+//		if (mtk::checkForCommandLineFlag("--Restart"))
+//		{
+//            //TODO: Fix this.. not working properly..
+//            //            MessageDlg("Wait...", mtWarning, TMsgDlgButtons() << mbOK, 0);
+//			mtk::WaitForPreviousProcessToFinish(gRestartMutexName);
+//            Sleep(1000);
+//		}
 
         pgDM 	                = new TpgDM(NULL);
         sensorsDM 	            = new TSensorsDataModule(NULL);
@@ -126,8 +126,6 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 
 //Third Parties
 #pragma comment(lib, "poco_foundation-static.lib")
-#pragma comment(lib, "poco_mysql_connector-static.lib")
-#pragma comment(lib, "poco_data-static.lib")
 #pragma comment(lib, "tinyxml2-static.lib")
 
 #pragma comment(lib, "VCLCommon.bpi")

@@ -16,7 +16,7 @@
 #include <IdSNMP.hpp>
 #include <IdUDPBase.hpp>
 #include <IdUDPClient.hpp>
-#include "mtkMoleculixException.h"
+#include "dslException.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "TIntegerLabeledEdit"
